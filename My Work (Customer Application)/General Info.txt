@@ -1,0 +1,124 @@
+Coursework Objective
+Creating a mobile app for a café, supporting customer ordering (and management operations)
+
+Should provide: good UX, secure authentication, use database, order management and other features using appropriate technologies.
+
+Should implement/simulate essential functionality from the other role (admin) to demonstrate a complete workflow. Eg implement an automated order status update to simulate Admin actions.
+
+2. Functional Requirements
+Customer application must allow users to:
+	Register and log in securely
+	Browse café menu (including drinks, cakes and other available 	products)
+	View product information (including prices, descriptions and 	availability)
+	Search/filter menu items
+	Add products to shopping cart
+	View, update, remove items from shopping cart
+	Place an order and receive conformation
+	View previous order and track current order statuses
+	Submit feedback and product/service ratings
+	Receive notifications when an order status changes
+
+We may simulate order processing using a timer, background processes, or test administration interface. However, the process must demonstrate actual application logic and meaningful data updates.
+
+3. Advanced Technical Integration
+Must implement at least one meaningful advanced integration:
+	REST API - connect to an external service to retrieve or exchange 	useful data
+	Artificial Intelligence - provide intelligent product 	recommendations or feedback analysis
+	Machine Learning - predict popular products or analyse ordering 	patterns
+	Data Analytics - Analyse order history, revenue, or customer 	behaviour
+	Cloud Services - implement cloud-based data storage or 	notifications
+	Other Integration - propose a suitable external service or 	technology relevant to the project
+
+A basic API or external service integration can meet core requirements if implemented correctly and includes appropriate data/error handling, security considerations and testing.
+
+4. Software Design, Architecture and Technical Requirements
+Application must be developed using Android Studio and Kotlin.
+
+May choose Jetpack Compose or XML for UI. Select and justify appropriate software architecture or design approach.
+
+Implementation must demonstrate:
+	Application must be developed using Android Studio and Kotlin
+	Clear software requirements and appropriate application design
+	Suitable UI/UX
+	Database integration (SQLite, Room, Firebase or other justified 	solution)
+	Secure authentication and role-based access where applicable
+	Data validation, exception handling, and appropriate error messages
+	Effective integration of APIs or external services
+	Appropriate consideration of privacy, security and ethical issues
+	Testing and evaluation of key functionality
+
+5. Real-World Development: Agile Working and Stakeholder Engagement
+Coursework intended to simulate real-world software development environment
+
+Lab tutor will act as client/stakeholder.
+
+Expected to develop application incrementally, demonstrate progress during weekly sessions and respond professionally to feedback.
+
+Based on weekly progress, client may request to:
+	Modify an existing feature
+	Add new functionality
+	Improve UI/UX
+	Change database structure or application workflow
+	Fix identified issue
+	Investigate/ integrate an additional technology
+These are part of learning experience and reflect changing requirements of real software projects.
+Any changes must be discussed, documented, prioritised, and implemented where appropriate and feasible within project scope.
+
+Must not make undocumented changes to agreed requirements.
+
+6. GitHub, Version Control and Change Management
+Must maintain appropriate GitHub repo containing source code and dev documentation:
+	Create repo at beginning of project
+	Commit and push regularly, including meaningful dev activities
+	Maintain a record of changes and new requirements
+	Use clear and descriptive commit messages
+	Keep project backlog updated
+	Record issues, bug fixes and improvements
+	Maintain appropriate project documentation
+	Use branches and pull requests where appropriate
+Every significant requirement change/ stakeholder request must be recorded and traceable to the relevant implementation/ GitHub commit.
+
+7. Testing, Security and Evaluation
+Must demonstrate appropriate testing of application:
+	Core functional requirements
+	Database operations and data consistency
+	Authentication and access control
+	Input validation and error handling
+	UI and navigation
+	API integration and failure scenarios
+	Advanced functionality we implemented.
+Include a test plan, test cases, expected results, actual results, and evidence of testing
+Must also discuss relevant security and privacy considerations including secure handling user data and credentials.
+Evaluation should identify strengths, limitations, challenges and possible future improvements of the applications.
+
+8. Technical Report and Submission Evidence
+Should prepare a technical report documenting work:
+	Introduction and Requirements: problem, objectives, user roles, 	functional and non-functional requirements.
+	Project Planning: PRD, backlog, development stages, planning 	decisions.
+	System Design: Architecture, UI/UX design, database design, and 	relevant diagrams.
+	Implementation: key functionality, technical decisions, API/AI 	integration, implementation challenges.
+	Testing and Security: test plan, results, evidence, security 	considerations.
+	Agile Development and Change Management: weekly progress, client	meeting records, change requests, and GitHub evidence.
+	GenAI Usage Declaration: full disclosure of GenAI, or confirmation 	none was used.
+	Evaluation and Relection: achievements, limitations, lessons	learned, future improvements.
+	References: appropriate technical and academic references.
+
+Submission must provide access to:
+•	The Android Studio project and relevant source code.
+•	The GitHub repository and development history.
+•	The individual technical report.
+•	The product backlog, change log, and client meeting records.
+•	Testing evidence.
+•	Any additional materials required for the demonstration.
+
+9. Individual Demonstration and Assessment
+Each student must demonstrate and explain their application during the scheduled assessment.
+You must be prepared to:
+•	Run the application and demonstrate the required functionality.
+•	Explain the architecture and technical design.
+•	Demonstrate database operations and external integrations.
+•	Discuss implementation decisions, security, and testing.
+•	Explain stakeholder changes and how they were managed.
+•	Show relevant GitHub commits and development evidence.
+•	Explain any GenAI assistance used.
+•	Answer technical questions and justify your individual contribution.
