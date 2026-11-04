@@ -1,4 +1,3 @@
-
 package com.example.smartcafemobileorderingapplication
 
 import android.os.Bundle
@@ -6,15 +5,26 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+
+val pinyonScript = FontFamily(Font(R.font.pinyon_script_regular))
 
 class MainActivity : ComponentActivity() {
 
@@ -25,81 +35,52 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MaterialTheme {
-                LoginScreen(
-                    onLogin = { email, password ->
-                        // Temporary test response
-                        Toast.makeText(
-                            this,
-                            "Login button pressed for $email",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                )
+                AppNavigation()
             }
         }
     }
 }
 
 @Composable
-fun LoginScreen(onLogin: (String, String) -> Unit) {
+fun AppNavigation() {
+    val navController = rememberNavController()
+    val context = LocalContext.current
 
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
-    var error by remember { mutableStateOf("") }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+    NavHost(
+        navController = navController,
+        startDestination = "home"
     ) {
-
-        Text(
-            "Smart Café",
-            style = MaterialTheme.typography.headlineSmall
-        )
-
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email
-            )
-        )
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            singleLine = true,
-            visualTransformation = PasswordVisualTransformation()
-        )
-
-        if (error.isNotEmpty()) {
-            Text(
-                error,
-                color = MaterialTheme.colorScheme.error
-            )
-        }
-
-        Button(
-            onClick = {
-                error = if (
-                    email.isBlank() || password.isBlank()
-                ) {
-                    "Enter email and password"
-                } else {
-                    ""
-                }
-
-                if (error.isEmpty()) {
-                    onLogin(email.trim(), password)
-                }
+    composable("home") {
+        HomeScreen(
+            onLoginClick = {
+                navController.navigate("login")
+            },
+            onRegisterClick = {
+                navController.navigate("register")
+            },
+            onBrowseMenuClick = {
+                navController.navigate("browseMenu")
             }
-        ) {
-            Text("Sign in")
-        }
+        )
+    }
+    composable("login") {
+        LoginScreen(
+            onLogin = { email, password ->
+
+                //Temprary test response
+                Toast.makeText(
+                    context,
+                    "Login button pressed",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        )
+    }
+    composable("register") {
+        //RegisterScreen()
+    }
+    composable("browseMenu") {
+        //BrowseMenuScreen()
+    }
     }
 }
