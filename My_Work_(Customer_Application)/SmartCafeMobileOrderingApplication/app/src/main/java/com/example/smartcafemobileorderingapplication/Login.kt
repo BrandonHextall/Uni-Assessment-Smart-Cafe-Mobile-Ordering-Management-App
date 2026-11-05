@@ -1,10 +1,5 @@
 package com.example.smartcafemobileorderingapplication
 
-import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -14,35 +9,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-
-class Login : ComponentActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        enableEdgeToEdge()
-
-        setContent {
-            MaterialTheme {
-                LoginScreen(
-                    onLogin = { email, password ->
-                        // Temporary test response
-                        Toast.makeText(
-                            this,
-                            "Login button pressed for $email",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                )
-            }
-        }
-    }
-}
+import androidx.credentials.GetCredentialRequest
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import androidx.compose.ui.res.stringResource
 
 @Composable
-fun LoginScreen(
+fun GoogleLogin() {
+    val googleIdOption = GetGoogleIdOption.Builder()
+        .setFilterByAuthorizedAccounts(true)
+        .setServerClientId(stringResource(R.string.default_web_client_id))
+        .build()
+
+    val request = GetCredentialRequest.Builder()
+        .addCredentialOption(googleIdOption)
+            .build()
+}
+@Composable
+fun LoginScreen (
     onLogin: (String, String) -> Unit,
-    //onRegisterClick: () -> Unit
 ) {
 
     var email by rememberSaveable { mutableStateOf("") }
@@ -56,12 +40,12 @@ fun LoginScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
 
-        Text(
-            "Smart Café",
+        Text (
+            "Login",
             style = MaterialTheme.typography.headlineSmall
         )
 
-        OutlinedTextField(
+        OutlinedTextField (
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
@@ -71,7 +55,7 @@ fun LoginScreen(
             )
         )
 
-        OutlinedTextField(
+        OutlinedTextField (
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
@@ -86,7 +70,7 @@ fun LoginScreen(
             )
         }
 
-        Button(
+        Button (
             onClick = {
                 error = if (
                     email.isBlank() || password.isBlank()
@@ -102,6 +86,14 @@ fun LoginScreen(
             }
         ) {
             Text("Sign in")
+        }
+
+        Button (
+            onClick = {
+                //GoogleLogin()
+            }
+        ) {
+            Text("Login with Google")
         }
     }
 }
