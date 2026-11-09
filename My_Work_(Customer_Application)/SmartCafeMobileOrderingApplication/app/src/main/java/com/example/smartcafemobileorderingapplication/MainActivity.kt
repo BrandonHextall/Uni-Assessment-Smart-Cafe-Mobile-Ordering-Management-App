@@ -13,6 +13,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.smartcafemobileorderingapplication.view.BrowseMenu
+import com.example.smartcafemobileorderingapplication.view.StartPage
+import com.example.smartcafemobileorderingapplication.view.LoginScreen
+import com.example.smartcafemobileorderingapplication.view.RegisterScreen
 
 val pinyonScript = FontFamily(Font(R.font.pinyon_script_regular))
 
@@ -41,7 +45,7 @@ fun AppNavigation() {
         startDestination = "start"
     ) {
     composable("start") {
-        HomeScreen(
+        StartPage(
             onLoginClick = {
                 navController.navigate("login")
             },
@@ -68,7 +72,7 @@ fun AppNavigation() {
     }
     composable("register") {
         RegisterScreen(
-            onRegister = { email, password ->
+            onRegister = { fullName, email, password, repeatPassword, deliveryAddress, error ->
 
                 //Temprary test response
                 Toast.makeText(
@@ -80,7 +84,7 @@ fun AppNavigation() {
         )
     }
     composable("browseMenu") {
-        //BrowseMenuScreen()
+        BrowseMenu()
     }
     }
 }

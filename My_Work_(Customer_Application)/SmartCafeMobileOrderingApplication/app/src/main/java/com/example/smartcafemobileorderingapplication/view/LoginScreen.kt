@@ -1,36 +1,36 @@
-package com.example.smartcafemobileorderingapplication
+package com.example.smartcafemobileorderingapplication.view
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.credentials.GetCredentialRequest
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption
-import androidx.compose.ui.res.stringResource
 
 @Composable
-fun GoogleLogin() {
-    val googleIdOption = GetGoogleIdOption.Builder()
-        .setFilterByAuthorizedAccounts(true)
-        .setServerClientId(stringResource(R.string.default_web_client_id))
-        .build()
-
-    val request = GetCredentialRequest.Builder()
-        .addCredentialOption(googleIdOption)
-            .build()
-}
-@Composable
-fun LoginScreen (
-    onLogin: (String, String) -> Unit,
+fun LoginScreen(
+    onLogin: (String, String) -> Unit
 ) {
+    var email by rememberSaveable() {
+        mutableStateOf("")
+    }
 
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable() {
+        mutableStateOf("")
+    }
     var error by remember { mutableStateOf("") }
 
     Column(
@@ -72,17 +72,7 @@ fun LoginScreen (
 
         Button (
             onClick = {
-                error = if (
-                    email.isBlank() || password.isBlank()
-                ) {
-                    "Enter email and password"
-                } else {
-                    ""
-                }
-
-                if (error.isEmpty()) {
-                    onLogin(email.trim(), password)
-                }
+                onLogin(email, password)
             }
         ) {
             Text("Sign in")
