@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.smartcafemobileorderingapplication"
+    namespace = "com.example.scoa"
     compileSdk {
         version = release(37)
     }
@@ -94,4 +94,10 @@ dependencies {
 
     // JSON serialization library, works with the Kotlin serialization plugin
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+
+    // Firebase Bill of Materials
+    implementation(platform("com.google.firebase:firebase-bom:35.1.0"))
+
+    // Cloud Firestore
+    implementation("com.google.firebase:firebase-firestore")
 }
