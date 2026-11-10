@@ -58,6 +58,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
+    implementation ("androidx.compose.material:material-icons-extended")
 
     // Compose version management
     implementation(platform("androidx.compose:compose-bom:2026.09.00"))

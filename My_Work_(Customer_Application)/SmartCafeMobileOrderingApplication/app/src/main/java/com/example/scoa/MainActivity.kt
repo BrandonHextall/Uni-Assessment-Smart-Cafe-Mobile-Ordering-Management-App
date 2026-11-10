@@ -34,7 +34,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MaterialTheme {
-                AppNavigation()
+                //AppNavigation()
+                BrowseMenu()
             }
         }
     }
