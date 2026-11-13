@@ -30,29 +30,23 @@ fun StartPage(
 
     Column(
 
-        modifier = Modifier.fillMaxSize()
+        Modifier.fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Text(
+        Text (
             "Liber-tea Café",
             modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 100.dp),
             style = MaterialTheme.typography.titleLarge,
             color = Color(0xFFFFFFFF)
         )
 
-        Button(onClick = onLoginClick) {
-            Text("Login", fontSize = 30.sp)
-        }
+        Button(onClick = onLoginClick) { Text("Login", fontSize = 30.sp) }
 
-        Button(onClick = onRegisterClick, modifier = Modifier.padding(0.dp, 30.dp)) {
-            Text("Register", fontSize = 30.sp)
-        }
+        Button(onClick = onRegisterClick, modifier = Modifier.padding(0.dp, 30.dp)) { Text("Register", fontSize = 30.sp) }
 
-        Button(onClick = onBrowseMenuClick) {
-            Text("Browse Menu", fontSize = 30.sp)
-        }
+        Button(onClick = onBrowseMenuClick) { Text("Browse Menu", fontSize = 30.sp) }
     }
 }

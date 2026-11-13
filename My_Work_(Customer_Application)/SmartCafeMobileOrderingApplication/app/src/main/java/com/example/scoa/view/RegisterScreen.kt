@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,12 +48,23 @@ fun RegisterScreen (
     var password by rememberSaveable { mutableStateOf("") }
     var repeatPassword by rememberSaveable { mutableStateOf("") }
     var deliveryAddress by rememberSaveable { mutableStateOf("") }
-    var error by remember { mutableStateOf("") }
-    var isLoading by remember { mutableStateOf(false) }
 
     // Observes error message from ViewModel
     // Auto-updates when value change
     val loggedIn by viewModel.loggedIn.collectAsStateWithLifecycle()
+    val error by viewModel.error.collectAsStateWithLifecycle()
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+
+    // Navigates to home screen when registration is successful
+    // Not 100% sure if this is necessary
+    LaunchedEffect(loggedIn) {
+        if (loggedIn) {
+            navController.navigate("home") {
+                popUpTo("home") { inclusive = true }
+                launchSingleTop = true
+            }
+        }
+    }
 
     // Register screen layout
 
@@ -73,9 +85,7 @@ fun RegisterScreen (
             onValueChange = { fullName = it },
             label = { Text("Full Name") },
             singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text
-            )
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
 
         OutlinedTextField (
@@ -83,9 +93,7 @@ fun RegisterScreen (
             onValueChange = { email = it },
             label = { Text("Email") },
             singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email
-            )
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 
         OutlinedTextField (
@@ -112,7 +120,7 @@ fun RegisterScreen (
         )
 
         if (error.isNotEmpty()) {
-            Text(
+            Text (
                 text = error,
                 color = MaterialTheme.colorScheme.error
             )
@@ -122,14 +130,10 @@ fun RegisterScreen (
         * Accept terms and conditions portion
         * TODO
         * */
+
         // Register button
         Button (
-            onClick = {
-                isLoading = true
-                error = ""
-                viewModel.register(fullName, email, password, repeatPassword, deliveryAddress)
-
-            },
+            onClick = { viewModel.register(fullName, email, password, repeatPassword, deliveryAddress) },
             modifier = Modifier.fillMaxWidth(),
             enabled = !isLoading
         ) {
@@ -144,9 +148,7 @@ fun RegisterScreen (
 
                 // Remove previous destinations from backstack
                 // (basically back button history)
-                popUpTo(0) {
-                    inclusive = true
-                }
+                popUpTo("home") { inclusive = true }
 
                 // Prevents multiple instances of home screen
                 launchSingleTop = true

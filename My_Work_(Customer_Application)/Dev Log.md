@@ -186,34 +186,43 @@ Record development activities chronologically.
 ## Development Session 9 – 13 November 2026
 
 **Objectives:**
-- Dark Mode detection
-- Automatic styling
+- Create custom Theme for application
+- Improve navigation
 
 **Work completed:**
-- Complete
+- Created custom theme
+- Removed start page for menu screen on startup
+- Removed top navbar
+- Moved profile button to bottom navbar
+- Profile button clickable: shows dropdown when logged in, redirects to login page if not
+- Sign Out button reloads page
+- Added "no account" button to login page
 
 **Issues encountered:**
-- None
+- Dropdown continuously placed with a space between the navbar
 
 **Outcome:**
-- outcome
+- Cleaner UI
+- More intuitive navigation
 
 **GitHub commits:**
-- link
+- 91e3be7c28d776676b2699d4e9ff31101c7ad1f3
 
-## Development Session 10 – [Date]
+## Development Session 10 – 13 November 2026
 
 **Objectives:**
-- Obj
+- Allow data retrieval from Products table
 
 **Work completed:**
-- Complete
+- ProductRepository file now retrieves data from Firestore
+- HomeViewModel manages products
+- HomeScreen displays retrieved data
 
 **Issues encountered:**
 - None
 
 **Outcome:**
-- outcome
+- Successful data retrieval from Firestore
 
 **GitHub commits:**
 - link

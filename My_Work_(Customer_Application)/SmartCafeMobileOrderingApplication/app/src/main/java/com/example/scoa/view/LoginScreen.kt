@@ -37,8 +37,7 @@ fun LoginScreen (
     // Auto-updates when value change
     val loggedIn by viewModel.loggedIn.collectAsStateWithLifecycle()
     val error by viewModel.error.collectAsStateWithLifecycle()
-
-    var isLoading by remember { mutableStateOf(false) }
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
 
     // Store inputs as variables
     var email by remember { mutableStateOf("") }
@@ -53,9 +52,7 @@ fun LoginScreen (
 
                 // Remove previous destinations from backstack
                 // (basically back button history)
-                popUpTo("login") {
-                    inclusive = true
-                }
+                popUpTo("login") { inclusive = true }
 
                 // Prevents multiple instances of home screen
                 launchSingleTop = true
@@ -66,24 +63,19 @@ fun LoginScreen (
     // Login screen layout
 
     // Add placeholder image to page
-    Column (
-        modifier = Modifier.fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-    ){
+    Column (modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),) {
         // Email field
-        OutlinedTextField(
+        OutlinedTextField (
             value = email,
             // When value changes, update variable to new value
             onValueChange = { email = it },
             label = { Text("Email") },
             singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Email
-            )
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
 
         // Password field
-        OutlinedTextField(
+        OutlinedTextField (
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
@@ -93,10 +85,7 @@ fun LoginScreen (
 
         // Login button
         Button (
-            onClick = {
-                isLoading = true
-                viewModel.login(email, password)
-            },
+            onClick = { viewModel.login(email, password) },
             modifier = Modifier.fillMaxWidth(),
             enabled = !isLoading
         ) {
@@ -109,9 +98,7 @@ fun LoginScreen (
             navController.navigate("register") {
                 // Remove previous destinations from backstack
                 // (basically back button history)
-                popUpTo(0) {
-                    inclusive = true
-                }
+                popUpTo(0) { inclusive = true }
 
                 // Prevents multiple instances of home screen
                 launchSingleTop = true

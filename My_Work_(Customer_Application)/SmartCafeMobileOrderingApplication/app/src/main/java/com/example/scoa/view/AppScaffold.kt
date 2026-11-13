@@ -1,10 +1,13 @@
 package com.example.scoa.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -25,8 +28,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.scoa.model.FirebaseManager
@@ -45,46 +51,41 @@ fun AppScaffold(
     // Bottom bar of page
     Scaffold(
         bottomBar = {
-            BottomAppBar(
-                containerColor = MaterialTheme.colorScheme.primary
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
+            BottomAppBar(containerColor = MaterialTheme.colorScheme.primary) {
+                Row (
+                    modifier = Modifier.fillMaxWidth().padding(20.dp, 0.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
-                    // Home button
-                    IconButton(onClick = { /* do something */ }, modifier = Modifier.size(50.dp)) {
-                        Icon(
-                            painter = rememberVectorPainter(Icons.Default.Home),
-                            contentDescription = "Localized description",
-                            modifier = Modifier.size(50.dp)
-                        )
-                    }
                     // Profile button and dropdown
                     Box {
-                        IconButton(onClick = {
-                            if (loggedIn) expanded = !expanded
-                            else navController.navigate("login")
-                        }, modifier = Modifier.size(50.dp)) {
-                            Icon(
-                                painter = rememberVectorPainter(Icons.Default.AccountBox),
-                                contentDescription = "Account",
-                                modifier = Modifier.size(50.dp)
-                            )
+                        Column (horizontalAlignment = Alignment.CenterHorizontally) {
+                            IconButton(onClick = {
+                                if (loggedIn) expanded = !expanded
+                                else navController.navigate("login")
+                            }, modifier = Modifier.size(50.dp)) {
+                                Icon (
+                                    painter = rememberVectorPainter(Icons.Default.AccountBox),
+                                    contentDescription = "Account",
+                                    modifier = Modifier.size(50.dp)
+                                )
+                            }
+                            Text("Profile")
                         }
-                        DropdownMenu(
+                        DropdownMenu (
                             expanded = expanded,
                             onDismissRequest = { expanded = false },
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            offset = DpOffset(x = (-120).dp, y = 0.dp)
                         ) {
                             if (loggedIn) {
-                                DropdownMenuItem(
+                                DropdownMenuItem (
                                     text = { Text("My Account") },
                                     onClick = {
                                         expanded = false
                                         // Navigate to account
                                     }
                                 )
-                                DropdownMenuItem(
+                                DropdownMenuItem (
                                     text = { Text("Sign Out") },
                                     onClick = {
                                         expanded = false
@@ -102,14 +103,14 @@ fun AppScaffold(
                                     }
                                 )
                             } else {
-                                DropdownMenuItem(
+                                DropdownMenuItem (
                                     text = { Text("Login") },
                                     onClick = {
                                         expanded = false
                                         // Navigate to login
                                     }
                                 )
-                                DropdownMenuItem(
+                                DropdownMenuItem (
                                     text = { Text("Register") },
                                     onClick = {
                                         expanded = false
@@ -120,28 +121,43 @@ fun AppScaffold(
                         }
                     }
                     // Menu button
-                    IconButton(onClick = { /* do something */ }, modifier = Modifier.size(50.dp)) {
-                        Icon(
-                            painter = rememberVectorPainter(Icons.Default.Coffee),
-                            contentDescription = "Localized description",
+                    Column (horizontalAlignment = Alignment.CenterHorizontally) {
+                        IconButton (
+                            onClick = { /* do something */ },
                             modifier = Modifier.size(50.dp)
-                        )
+                        ) {
+                            Icon(
+                                painter = rememberVectorPainter(Icons.Default.Coffee),
+                                contentDescription = "Localized description",
+                                modifier = Modifier.size(50.dp)
+                            )
+                        }
+                        Text("Menu")
                     }
                     // Orders button
-                    IconButton(onClick = { /* do something */ }, modifier = Modifier.size(50.dp)) {
-                        Icon(
-                            painter = rememberVectorPainter(Icons.Default.Receipt),
-                            contentDescription = "Localized description",
+                    Column (horizontalAlignment = Alignment.CenterHorizontally) {
+                        IconButton (
+                            onClick = { /* do something */ },
                             modifier = Modifier.size(50.dp)
-                        )
+                        ) {
+                            Icon (
+                                painter = rememberVectorPainter(Icons.Default.Receipt),
+                                contentDescription = "Localized description",
+                                modifier = Modifier.size(50.dp)
+                            )
+                        }
+                        Text("Orders")
                     }
                     // Cart button
-                    IconButton(onClick = { /* do something */ }) {
-                        Icon(
-                            painter = rememberVectorPainter(Icons.Default.ShoppingCart),
-                            contentDescription = "Localized description",
-                            modifier = Modifier.size(50.dp)
-                        )
+                    Column (horizontalAlignment = Alignment.CenterHorizontally) {
+                        IconButton(onClick = { /* do something */ }) {
+                            Icon (
+                                painter = rememberVectorPainter(Icons.Default.ShoppingCart),
+                                contentDescription = "Localized description",
+                                modifier = Modifier.size(50.dp)
+                            )
+                        }
+                        Text("Cart")
                     }
                 }
             }

@@ -21,7 +21,7 @@ import com.example.scoa.theme.AppTheme
 // Firebase
 
 // Application screens
-import com.example.scoa.view.BrowseMenu
+import com.example.scoa.view.HomeScreen
 import com.example.scoa.view.StartPage
 import com.example.scoa.view.LoginScreen
 import com.example.scoa.view.RegisterScreen
@@ -101,9 +101,9 @@ fun AppNavigation() {
             )
         }
 
-        composable("home") { BrowseMenu(navController) }
+        composable("home") { HomeScreen(navController) }
 
         // Comment this line when using the start page
-        composable("start") { BrowseMenu(navController)}
+        composable("start") { HomeScreen(navController)}
     }
 }

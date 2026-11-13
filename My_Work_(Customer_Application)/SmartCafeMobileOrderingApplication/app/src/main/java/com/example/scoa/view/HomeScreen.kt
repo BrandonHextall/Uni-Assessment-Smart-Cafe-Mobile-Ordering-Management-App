@@ -1,75 +1,94 @@
 package com.example.scoa.view
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.text.input.TextFieldState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.Coffee
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Receipt
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.scoa.theme.isDarkModeEnabled
-import com.example.scoa.R
-import com.google.firebase.auth.FirebaseAuth
-import com.example.scoa.model.FirebaseManager
+import com.example.scoa.viewmodel.HomeViewModel
 
 @Composable
-// Search bar for browsing menu
-fun SearchBar(
-    textFieldState: TextFieldState,
-    onSearch: (String) -> Unit,
-    searchResults: List<String>,
-    modifier: Modifier = Modifier
+fun HomeScreen (
+    navController: NavController,
+               viewModel: HomeViewModel = viewModel()
 ) {
-    val firebase = remember { FirebaseManager() }
-    val isDarkMode = isDarkModeEnabled()
-    val loggedIn = firebase.isUserLoggedIn()
-}
+    // Observes ViewModel states.
+    val products by viewModel.products.collectAsStateWithLifecycle()
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+    val error by viewModel.error.collectAsStateWithLifecycle()
 
-
-
-@Composable
-fun BrowseMenu(navController: NavController) {
+    // Display products here
     AppScaffold(navController) { innerPadding ->
-        SearchBar(textFieldState = TextFieldState(), onSearch = {"String"}, searchResults = listOf("String"), modifier = Modifier)
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text("Browse Menu")
+            Text(
+                text = "Popular Products",
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            // Displays loading indicator.
+            if (isLoading) {
+                CircularProgressIndicator()
+            }
+
+            // Displays an error if retrieval fails.
+            else if (error.isNotEmpty()) {
+                Text(
+                    text = error,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+
+            // Displays retrieved products.
+            else if (products.isEmpty()) {
+                Text("No products found")
+            }
+
+            else {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(products) { product ->
+
+                        Column (
+                            modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.primary)
+                        ) {
+
+                            Text(
+                                text = product.name,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Text (product.id.toString())
+
+                            Text(product.description)
+
+                            Text("£${"%.2f".format(product.price)}")
+
+                            Text(product.availability)
+
+                            Text(product.category.toString())
+                            Text(product.allergens.toString())
+                        }
+                    }
+                }
+            }
         }
     }
 }
