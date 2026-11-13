@@ -19,24 +19,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.scoa.controller.FirebaseAuthRepository
-import com.example.scoa.controller.LoginController
-import com.example.scoa.controller.RegisterController
-import com.example.scoa.model.UserRepository
-import com.google.firebase.auth.FirebaseAuth
-import com.example.scoa.view.StartPage
+
+// Temporary while converting to MVVM format
+
+// Firebase
+
+// Application screens
+import com.example.scoa.viewmodel.RegisterViewModel
 
 @Composable
 fun RegisterScreen (
-    controller: RegisterController,
+    vm: RegisterViewModel,
     onLoginClick: () -> Unit,
     onRegistrationSuccess: () -> Unit
 ) {
@@ -61,17 +60,6 @@ fun RegisterScreen (
 
         composable("login") {
             LoginScreen (
-                controller = remember {
-                    LoginController(
-                        authRepository = FirebaseAuthRepository(
-                            FirebaseAuth.getInstance()
-                        ),
-                        userRepository = UserRepository()
-                    )
-                },
-                onRegisterClick = {
-                    navController.navigate("register")
-                },
                 onLoginSuccess = {
                     // Navigate to home screen
                     navController.navigate("home")
@@ -145,16 +133,7 @@ fun RegisterScreen (
             onClick = {
                 isLoading = true
                 error = ""
-
-                controller.register(fullName, email, password, repeatPassword, deliveryAddress) { result ->
-                    isLoading = false
-                    result.onSuccess {
-                        onRegistrationSuccess()
-                    }
-                    result.onFailure {
-                        error = it.message ?: "Registration failed"
-                    }
-                }
+                vm.register(fullName, email, password, repeatPassword, deliveryAddress)
 
             },
             modifier = Modifier.fillMaxWidth(),
