@@ -22,17 +22,57 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.scoa.controller.FirebaseAuthRepository
 import com.example.scoa.controller.LoginController
+import com.example.scoa.controller.RegisterController
+import com.example.scoa.model.UserRepository
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun LoginScreen(
     controller: LoginController,
+    onRegisterClick: () -> Unit,
     onLoginSuccess: () -> Unit
 ) {
+    val navController = rememberNavController()
+
+    // Initiate variables for login credential storage
     var email by rememberSaveable() { mutableStateOf("") }
     var password by rememberSaveable() { mutableStateOf("") }
     var error by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
+
+    // Allows navigation to login screen
+    NavHost (
+        navController = navController,
+        startDestination = "empty"
+    ) {
+        // Empty composable to prevent simultaneous rendering of login and register screens
+        composable("empty") {}
+
+        composable("register") {
+            RegisterScreen (
+                controller = remember {
+                    RegisterController(
+                        authRepository = FirebaseAuthRepository(
+                            FirebaseAuth.getInstance()
+                        ),
+                        userRepository = UserRepository()
+                    )
+                },
+                onLoginClick = {
+                    navController.navigate("login")
+                },
+                onRegistrationSuccess = {
+                    // Navigate to home screen
+                    navController.navigate("home")
+                }
+            )
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -89,17 +129,15 @@ fun LoginScreen(
             modifier = Modifier.fillMaxWidth(),
             enabled = !isLoading
         ) {
+            // Buffer icon for loading
             if (isLoading) {
                 CircularProgressIndicator(modifier = Modifier.size(20.dp))
             } else Text("Sign in")
         }
 
-        Button (
-            onClick = {
-                /* TODO */
-            }
-        ) {
-            Text("Login with Google")
+        // Displays clickable link to switch to register page
+        Button (onClick = onRegisterClick) {
+            Text("Already have an account? Login here")
         }
     }
 }

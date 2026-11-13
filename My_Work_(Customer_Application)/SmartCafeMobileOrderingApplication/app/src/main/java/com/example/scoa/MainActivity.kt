@@ -32,10 +32,11 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
 
+        // Sets and displays startup page
         setContent {
             MaterialTheme {
-                //AppNavigation()
-                BrowseMenu()
+                AppNavigation()
+                //BrowseMenu()
             }
         }
     }
@@ -44,7 +45,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    val context = LocalContext.current
 
     NavHost (
         navController = navController,
@@ -73,6 +73,9 @@ fun AppNavigation() {
                         userRepository = UserRepository()
                     )
                 },
+                onRegisterClick = {
+                    navController.navigate("register")
+                },
                 onLoginSuccess = {
                     // Navigate to home screen
                     navController.navigate("home")
@@ -90,6 +93,9 @@ fun AppNavigation() {
 
                         userRepository = UserRepository()
                     )
+                },
+                onLoginClick = {
+                    navController.navigate("login")
                 },
                 onRegistrationSuccess = {
                     // Navigate to home screen

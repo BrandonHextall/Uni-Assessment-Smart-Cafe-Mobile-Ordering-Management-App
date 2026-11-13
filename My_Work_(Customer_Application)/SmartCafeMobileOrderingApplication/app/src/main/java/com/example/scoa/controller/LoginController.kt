@@ -22,7 +22,7 @@ class LoginController(
             )
             return
         }
-
+        //
         authRepository.signIn(email.trim(), password) { result -> onResult(result) }
     }
 }

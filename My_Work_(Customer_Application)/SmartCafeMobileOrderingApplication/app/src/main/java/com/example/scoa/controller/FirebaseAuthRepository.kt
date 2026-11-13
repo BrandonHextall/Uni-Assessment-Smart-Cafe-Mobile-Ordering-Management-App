@@ -10,12 +10,15 @@ class FirebaseAuthRepository (
         password: String,
         onResult: (Result<Unit>) -> Unit
     ) {
+        // Sends email and password to Firebase for authentication
         firebaseAuth.signInWithEmailAndPassword(email.trim(), password
         ).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 onResult(Result.success(Unit))
             } else {
                 val exception = task.exception
+
+                // Displays relevant error message upon failure
                 val errorMessage = when (exception) {
                     is com.google.firebase.auth.FirebaseAuthInvalidUserException -> "Invalid email or password"
                     is com.google.firebase.auth.FirebaseAuthInvalidCredentialsException -> "Invalid email or password"
@@ -31,6 +34,7 @@ class FirebaseAuthRepository (
         password: String,
         onResult: (Result<String>) -> Unit
     ) {
+        // Creates a new user with the provided email and password
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {

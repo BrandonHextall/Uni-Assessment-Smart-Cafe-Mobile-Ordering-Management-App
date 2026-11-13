@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class UserRepository (
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) {
+    // Saves user data when registering
     fun saveUser (
         user: User,
         onResult: (Result<Unit>) -> Unit

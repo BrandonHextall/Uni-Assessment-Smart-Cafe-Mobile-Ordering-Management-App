@@ -19,16 +19,30 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.scoa.controller.FirebaseAuthRepository
+import com.example.scoa.controller.LoginController
 import com.example.scoa.controller.RegisterController
+import com.example.scoa.model.UserRepository
+import com.google.firebase.auth.FirebaseAuth
+import com.example.scoa.view.StartPage
 
 @Composable
 fun RegisterScreen (
     controller: RegisterController,
+    onLoginClick: () -> Unit,
     onRegistrationSuccess: () -> Unit
 ) {
+    val navController = rememberNavController()
+
+    // Initiate variables for registration credential storage
     var fullName by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
@@ -37,6 +51,34 @@ fun RegisterScreen (
     var error by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
 
+    // Allows navigation to login screen
+    NavHost (
+        navController = navController,
+        startDestination = "empty"
+    ) {
+        // Empty composable to prevent simultaneous rendering of login and register screens
+        composable("empty") {}
+
+        composable("login") {
+            LoginScreen (
+                controller = remember {
+                    LoginController(
+                        authRepository = FirebaseAuthRepository(
+                            FirebaseAuth.getInstance()
+                        ),
+                        userRepository = UserRepository()
+                    )
+                },
+                onRegisterClick = {
+                    navController.navigate("register")
+                },
+                onLoginSuccess = {
+                    // Navigate to home screen
+                    navController.navigate("home")
+                }
+            )
+        }
+    }
 
     Column (
         modifier = Modifier
@@ -118,17 +160,20 @@ fun RegisterScreen (
             modifier = Modifier.fillMaxWidth(),
             enabled = !isLoading
         ) {
+            // Buffer icon while loading
             if (isLoading) {
                 CircularProgressIndicator(modifier = Modifier.size(20.dp))
             } else Text("Register")
         }
 
-        Button (
-            onClick = {
-                /* TODO */
-            }
-        ) {
-            Text("Register with Google")
+        /*
+        * Accept terms and conditions portion
+        * TODO
+        * */
+
+        // Displays clickable link to switch to login page
+        Button (onClick = onLoginClick) {
+            Text("Already have an account? Login here")
         }
     }
 }

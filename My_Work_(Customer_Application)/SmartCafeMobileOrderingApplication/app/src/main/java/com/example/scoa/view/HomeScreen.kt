@@ -68,8 +68,8 @@ import com.example.scoa.model.AuthRepository
 import com.example.scoa.model.isUserLoggedIn
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
+// Search bar for browsing menu
 fun SearchBar(
     textFieldState: TextFieldState,
     onSearch: (String) -> Unit,
@@ -80,7 +80,6 @@ fun SearchBar(
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavBars(
     modifier: Modifier = Modifier
@@ -100,6 +99,7 @@ fun NavBars(
                 Box (
                     modifier = Modifier.padding(0.dp)
                 ) {
+                    // Hamburger menu for dropdown
                     IconButton(onClick = { expanded = !expanded }) {
                         Icon(
                             painter = rememberVectorPainter(Icons.Default.Menu),
@@ -107,37 +107,40 @@ fun NavBars(
                             modifier = Modifier.size(50.dp),
                         )
                     }
-
-                    // Dropdown menu for logged-in users
-                    DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false },
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text("My Profile") },
-                            onClick = { /* TODO */ }
-                        )
-                        DropdownMenuItem(
-                            text = { Text("Sign Out") },
-                            onClick = { /* TODO */}
-                        )
-                    }
-
-                    // Dropdown menu for non-logged in users
-                    DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false },
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text(isUserLoggedIn().toString()) },
-                            onClick = { /* TODO */ }
-                        )
-                        DropdownMenuItem(
-                            text = { Text("Register") },
-                            onClick = { /* TODO */}
-                        )
+                    if (isUserLoggedIn()) {
+                        // Dropdown menu for logged-in users
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false },
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("My Account") },
+                                onClick = { /* TODO */ }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Sign Out") },
+                                onClick = { FirebaseAuth.getInstance().signOut() }
+                            )
+                        }
+                    } else {
+                        // Dropdown menu for non-logged in users
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false },
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Login") },
+                                onClick = { /* TODO */ }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Register") },
+                                onClick = { /* TODO */ }
+                            )
+                        }
                     }
                 }
+
+                // Logo
                 IconButton(onClick = { /* do something */ }) {
                     Image(
                         painter = painterResource(id = R.drawable.teacup_placeholder),
@@ -145,6 +148,8 @@ fun NavBars(
                         modifier = Modifier.size(50.dp)
                     )
                 }
+
+                // Account button
                 IconButton(onClick = { /* do something */ }) {
                     Icon(
                         painter = rememberVectorPainter(Icons.Default.AccountBox),
