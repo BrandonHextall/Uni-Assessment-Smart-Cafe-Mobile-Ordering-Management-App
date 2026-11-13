@@ -1,5 +1,6 @@
 package com.example.scoa.view
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -35,12 +38,9 @@ import com.example.scoa.viewmodel.RegisterViewModel
 
 @Composable
 fun RegisterScreen (
-    vm: RegisterViewModel,
-    onLoginClick: () -> Unit,
-    onRegistrationSuccess: () -> Unit
+    viewModel: RegisterViewModel,
+    navController: NavController
 ) {
-    val navController = rememberNavController()
-
     // Initiate variables for registration credential storage
     var fullName by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
@@ -50,28 +50,17 @@ fun RegisterScreen (
     var error by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
 
-    // Allows navigation to login screen
-    NavHost (
-        navController = navController,
-        startDestination = "empty"
-    ) {
-        // Empty composable to prevent simultaneous rendering of login and register screens
-        composable("empty") {}
+    // Observes error message from ViewModel
+    // Auto-updates when value change
+    val loggedIn by viewModel.loggedIn.collectAsStateWithLifecycle()
 
-        composable("login") {
-            LoginScreen (
-                onLoginSuccess = {
-                    // Navigate to home screen
-                    navController.navigate("home")
-                }
-            )
-        }
-    }
+    // Register screen layout
 
+    // Add placeholder image to page
     Column (
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
 
@@ -129,30 +118,39 @@ fun RegisterScreen (
             )
         }
 
+        /*
+        * Accept terms and conditions portion
+        * TODO
+        * */
+        // Register button
         Button (
             onClick = {
                 isLoading = true
                 error = ""
-                vm.register(fullName, email, password, repeatPassword, deliveryAddress)
+                viewModel.register(fullName, email, password, repeatPassword, deliveryAddress)
 
             },
             modifier = Modifier.fillMaxWidth(),
             enabled = !isLoading
         ) {
             // Buffer icon while loading
-            if (isLoading) {
-                CircularProgressIndicator(modifier = Modifier.size(20.dp))
-            } else Text("Register")
+            if (isLoading) CircularProgressIndicator(modifier = Modifier.size(20.dp))
+            else Text("Register")
         }
-
-        /*
-        * Accept terms and conditions portion
-        * TODO
-        * */
 
         // Displays clickable link to switch to login page
-        Button (onClick = onLoginClick) {
-            Text("Already have an account? Login here")
-        }
+        Button (onClick = {
+            navController.navigate("login") {
+
+                // Remove previous destinations from backstack
+                // (basically back button history)
+                popUpTo(0) {
+                    inclusive = true
+                }
+
+                // Prevents multiple instances of home screen
+                launchSingleTop = true
+            }
+        }) { Text("Already have an account? Login here") }
     }
 }
