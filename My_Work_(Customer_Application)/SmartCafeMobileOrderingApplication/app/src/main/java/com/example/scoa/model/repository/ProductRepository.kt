@@ -1,5 +1,6 @@
-package com.example.scoa.model
+package com.example.scoa.model.repository
 
+import com.example.scoa.model.entity.ProductEntity
 import com.google.firebase.firestore.FirebaseFirestore
 
 // Retrieves products from Firestore
@@ -7,14 +8,14 @@ class ProductRepository {
     private val db = FirebaseFirestore.getInstance()
 
     // Retrieve all products from Firestore
-    fun getProducts(onResult: (Result<List<Product>>) -> Unit) {
+    fun getProducts(onResult: (Result<List<ProductEntity>>) -> Unit) {
         db.collection("menu")
             .get()
             .addOnSuccessListener { docs ->
 
                 // Converts each document into a Product
-                var products = docs.mapNotNull { doc ->
-                    doc.toObject(Product::class.java)
+                var products = docs.mapNotNull   { doc ->
+                    doc.toObject(ProductEntity::class.java)
                 }
                 // Adds image filename to Product
                 products.forEach { product ->

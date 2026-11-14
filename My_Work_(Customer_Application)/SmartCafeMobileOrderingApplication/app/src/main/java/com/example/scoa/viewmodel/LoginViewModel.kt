@@ -1,7 +1,7 @@
 package com.example.scoa.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.scoa.model.FirebaseManager
+import com.example.scoa.model.authentication.FirebaseManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

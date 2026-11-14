@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
-
+    id("com.google.devtools.ksp")
     // Kotlin serialization plugin for type safe routes and navigation arguments
     kotlin("plugin.serialization") version "2.0.21"
     alias(libs.plugins.google.gms.google.services)
@@ -50,7 +50,7 @@ dependencies {
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.androidx.foundation)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.room.ktx)
+    //implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.ui.text)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
@@ -102,4 +102,8 @@ dependencies {
 
     // Cloud Firestore
     implementation("com.google.firebase:firebase-firestore")
+
+    // Room dependencies
+    implementation("androidx.room3:room3-runtime:3.0.3")
+    ksp("androidx.room3:room3-compiler:3.0.3")
 }

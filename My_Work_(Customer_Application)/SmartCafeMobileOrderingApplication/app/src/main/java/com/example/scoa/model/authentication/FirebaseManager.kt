@@ -1,4 +1,4 @@
-package com.example.scoa.model
+package com.example.scoa.model.authentication
 
 import com.google.firebase.auth.FirebaseAuth
 

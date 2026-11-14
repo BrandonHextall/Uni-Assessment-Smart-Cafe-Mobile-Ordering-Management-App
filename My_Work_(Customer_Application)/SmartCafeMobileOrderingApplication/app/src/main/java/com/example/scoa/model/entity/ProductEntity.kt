@@ -1,6 +1,6 @@
-package com.example.scoa.model
+package com.example.scoa.model.entity
 
-class Product {
+class ProductEntity {
     var id: Int = 1;
     var name: String = "";
     var description: String = "";

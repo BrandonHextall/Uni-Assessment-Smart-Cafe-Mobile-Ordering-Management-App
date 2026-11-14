@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.scoa.model.FirebaseManager
+import com.example.scoa.model.authentication.FirebaseManager
 
 @Composable
 fun AppScaffold(

@@ -3,7 +3,6 @@ package com.example.scoa.view
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -16,11 +15,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.scoa.model.Product
+import com.example.scoa.model.entity.ProductEntity
 import com.example.scoa.theme.typography
 import com.example.scoa.viewmodel.HomeViewModel
 
@@ -47,7 +45,7 @@ fun HomeScreen (
     val error by viewModel.error.collectAsStateWithLifecycle()
 
     // Variable for product popup
-    var selectedProduct: Product? by remember { mutableStateOf<Product?>(null) }
+    var selectedProduct: ProductEntity? by remember { mutableStateOf<ProductEntity?>(null) }
 
     // Display products here
     AppScaffold(navController) { innerPadding ->
@@ -90,7 +88,7 @@ fun HomeScreen (
 
 // Creates grid where products are displayed
 @Composable
-fun MakeProductGrid(products: List<Product>, onProductClick: (Product) -> Unit) {
+fun MakeProductGrid(products: List<ProductEntity>, onProductClick: (ProductEntity) -> Unit) {
     LazyVerticalGrid (
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -107,7 +105,7 @@ fun MakeProductGrid(products: List<Product>, onProductClick: (Product) -> Unit) 
 
 // Creates a card for each product
 @Composable
-fun MakeProductCard(product: Product, onClick: () -> Unit) {
+fun MakeProductCard(product: ProductEntity, onClick: () -> Unit) {
     Surface(onClick = onClick) {
         Column(
             modifier = Modifier
@@ -144,7 +142,7 @@ fun MakeProductCard(product: Product, onClick: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductPopup( product: Product, onDismiss: () -> Unit) {
+fun ProductPopup(product: ProductEntity, onDismiss: () -> Unit) {
     // LocalContext retrieves Android app resources like Drawable images, Strings, Colours and application information
     val context = LocalContext.current
 

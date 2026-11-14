@@ -1,8 +1,8 @@
 package com.example.scoa.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.scoa.model.Product
-import com.example.scoa.model.ProductRepository
+import com.example.scoa.model.entity.ProductEntity
+import com.example.scoa.model.repository.ProductRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -13,12 +13,12 @@ class HomeViewModel : ViewModel() {
 
     // MutableStateFlow stores the data
     // StateFlow exposes the data
-    private val _products = MutableStateFlow<List<Product>>(emptyList())
+    private val _products = MutableStateFlow<List<ProductEntity>>(emptyList())
     private val _isLoading = MutableStateFlow(false)
     private val _error = MutableStateFlow("")
 
     // Makes states read-only
-    val products: StateFlow<List<Product>> = _products
+    val products: StateFlow<List<ProductEntity>> = _products
     val isLoading: StateFlow<Boolean> = _isLoading
     val error: StateFlow<String> = _error
 

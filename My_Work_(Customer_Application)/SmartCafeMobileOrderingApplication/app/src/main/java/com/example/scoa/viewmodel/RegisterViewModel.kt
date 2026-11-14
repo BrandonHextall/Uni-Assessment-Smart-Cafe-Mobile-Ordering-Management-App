@@ -1,17 +1,12 @@
 package com.example.scoa.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.scoa.model.FirebaseManager
-import com.example.scoa.model.User
-import com.example.scoa.model.UserRepository
+import com.example.scoa.model.authentication.FirebaseManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import android.util.Log
-import com.google.firebase.auth.FirebaseAuth
 
 class RegisterViewModel : ViewModel() {
     private val firebase = FirebaseManager()
-    private val userRepository = UserRepository()
     private val _error = MutableStateFlow("")
     private val _loggedIn = MutableStateFlow(false)
     private val _isLoading = MutableStateFlow(false)
@@ -55,27 +50,8 @@ class RegisterViewModel : ViewModel() {
 
         firebase.register(email.trim(), password) { result ->
             result.onSuccess { uid ->
-                // Create customer model
-                val user = User (
-                    userID = uid,
-                    fullName = fullName.trim(),
-                    email = email.trim(),
-                    deliveryAddress = address.trim()
-                )
-
-                // Save user to Firestore
-                userRepository.saveUser(user) {
-                    saveResult -> saveResult.onSuccess {
-                        _loggedIn.value = true
-                    _isLoading.value = false
-                    }
-                    saveResult.onFailure {
-                        _error.value = saveResult.exceptionOrNull()?.message ?: "Unable to save user data"
-                        _isLoading.value = false
-                    }
-                }
-
-
+                _loggedIn.value = true
+                _isLoading.value = false
             }
             // The ?.message only collects the string if it available
             // Helps prevent errors and exceptions
@@ -84,5 +60,8 @@ class RegisterViewModel : ViewModel() {
                 _isLoading.value = false
             }
         }
+
+        // Registration attempt finished
+        _isLoading.value = false
     }
 }
