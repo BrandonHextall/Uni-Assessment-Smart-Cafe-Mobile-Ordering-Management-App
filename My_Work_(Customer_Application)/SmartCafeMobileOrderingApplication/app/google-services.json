@@ -7,12 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:545268571555:android:6ee02fdaf1ddd5f59dce16",
+        "mobilesdk_app_id": "1:545268571555:android:5a7e5b71e4e09e409dce16",
         "android_client_info": {
-          "package_name": "com.example.smartcafemobileorderingapplication"
+          "package_name": "com.example.scoa"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "545268571555-c8v8au02vqf2bgl6em4p7sp9dlo9fsfl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBTpZtd7DyrZbc7oT8N0BO0fblIhCOfzQs"
@@ -20,7 +25,41 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "545268571555-c8v8au02vqf2bgl6em4p7sp9dlo9fsfl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:545268571555:android:6ee02fdaf1ddd5f59dce16",
+        "android_client_info": {
+          "package_name": "com.example.smartcafemobileorderingapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "545268571555-c8v8au02vqf2bgl6em4p7sp9dlo9fsfl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTpZtd7DyrZbc7oT8N0BO0fblIhCOfzQs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "545268571555-c8v8au02vqf2bgl6em4p7sp9dlo9fsfl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

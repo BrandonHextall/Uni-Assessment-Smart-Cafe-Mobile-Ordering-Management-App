@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.androidx.foundation)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.ui.text)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)

@@ -6,6 +6,8 @@ import com.example.scoa.model.User
 import com.example.scoa.model.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
 
 class RegisterViewModel : ViewModel() {
     private val firebase = FirebaseManager()
@@ -65,13 +67,15 @@ class RegisterViewModel : ViewModel() {
                 userRepository.saveUser(user) {
                     saveResult -> saveResult.onSuccess {
                         _loggedIn.value = true
+                    _isLoading.value = false
                     }
                     saveResult.onFailure {
                         _error.value = saveResult.exceptionOrNull()?.message ?: "Unable to save user data"
+                        _isLoading.value = false
                     }
                 }
 
-                _isLoading.value = false
+
             }
             // The ?.message only collects the string if it available
             // Helps prevent errors and exceptions

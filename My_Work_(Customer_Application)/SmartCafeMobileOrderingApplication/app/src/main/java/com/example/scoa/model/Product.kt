@@ -6,7 +6,7 @@ class Product {
     var description: String = "";
     var availability: String = "";
     var price: Double = 0.0;
-    var imageURL: String = "";
+    var imageName: String = "";
     var category: Int = 1;
     var allergens: ArrayList<String> = ArrayList<String>();
 }

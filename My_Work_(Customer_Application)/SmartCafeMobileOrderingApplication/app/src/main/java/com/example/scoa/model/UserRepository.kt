@@ -10,7 +10,7 @@ class UserRepository (
         user: User,
         onResult: (Result<Unit>) -> Unit
     ) {
-        db.collection("Users")
+        db.collection("users")
             .document(user.userID)
             .set(user)
             .addOnSuccessListener {

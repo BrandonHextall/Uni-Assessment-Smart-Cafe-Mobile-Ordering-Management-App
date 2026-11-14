@@ -4,13 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -28,7 +25,7 @@ import com.example.scoa.view.RegisterScreen
 import com.example.scoa.viewmodel.LoginViewModel
 import com.example.scoa.viewmodel.RegisterViewModel
 
-val pinyonScript = FontFamily(Font(R.font.pinyon_script_regular))
+val pinyonScript = FontFamily(Font(R.font.pinyonscript_regular))
 
 class MainActivity : ComponentActivity() {
 

@@ -11,7 +11,7 @@ import com.example.scoa.R
 // Custom font
 val pinyon = FontFamily (
     Font (
-        resId = R.font.pinyon_script_regular,
+        resId = R.font.pinyonscript_regular,
         weight = FontWeight.Normal
     )
 )
