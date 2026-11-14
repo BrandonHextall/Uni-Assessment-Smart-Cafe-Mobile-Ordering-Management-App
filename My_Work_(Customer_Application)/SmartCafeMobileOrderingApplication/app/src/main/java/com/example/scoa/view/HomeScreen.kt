@@ -34,6 +34,7 @@ import com.example.scoa.viewmodel.HomeViewModel
  */
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen (
     navController: NavController,
@@ -47,6 +48,10 @@ fun HomeScreen (
     // Variable for product popup
     var selectedProduct: ProductEntity? by remember { mutableStateOf<ProductEntity?>(null) }
 
+    // Load products when the screen first appears
+    LaunchedEffect(Unit) {
+        viewModel.loadProducts()
+    }
     // Display products here
     AppScaffold(navController) { innerPadding ->
         Column (

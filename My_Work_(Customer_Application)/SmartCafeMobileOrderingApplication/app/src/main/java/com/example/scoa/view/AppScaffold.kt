@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.scoa.model.authentication.FirebaseManager
+import com.example.scoa.model.database.UserDao
 
 @Composable
 fun AppScaffold(
@@ -24,6 +25,7 @@ fun AppScaffold(
 
     // Bottom bar of page
     Scaffold(
+
         bottomBar = {
             BottomAppBar(containerColor = MaterialTheme.colorScheme.primary) {
                 Row (

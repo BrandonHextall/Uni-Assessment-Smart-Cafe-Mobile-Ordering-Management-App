@@ -227,36 +227,46 @@ Record development activities chronologically.
 **GitHub commits:**
 - 20e3c6fd499620576b7601484c2d08eabf89620a
 
-## Development Session 11 – [Date]
+## Development Session 11 – 14 November 2026
 
 **Objectives:**
-- Obj
+- Migrate from Firestore to SQLite
 
 **Work completed:**
-- Complete
+- Removed storing user data to Firestore
+- Reorganised file system to increase ease of navigation
 
 **Issues encountered:**
-- None
+- Build wouldn't see any `model/entity/` file as a 'regular file'
 
 **Outcome:**
-- outcome
+- Had to copy code of multiple files, delete old files, recreate the file blank with the same name, then paste the code into new file
+- Better file storage solution
+- Began migration to SQLite
+- Firestore no longer saves user data to Firestore, only Firebase Auth
 
 **GitHub commits:**
-- link
+- 0ee0dbbf99062b90bf08efb10ec4417a2c8aaddd
 
-## Development Session 12 – [Date]
+## Development Session 12 – 14 November 2026
 
 **Objectives:**
-- Obj
+- Complete migration to SQLite using Room
+- Implement product retrieval through MVVM architecture
+- Display locally stored products on home screen from local database
 
 **Work completed:**
-- Complete
+- Created `InitialProducts.kt` with pre-existing products fro Firestore data
+- Restructured ProductRepository to retrieve and manage products through ProductDao
+- Implemented automatic product insertion when product table is empty
+- Connected product-loading to HomeViewModel
 
 **Issues encountered:**
-- None
+- Firestore deserialisation error due to ProductEntity having the no-argument constructor for Firestore
+- Product insertion and retrieval not functionally verified
 
 **Outcome:**
-- outcome
+- Initial SQLite/Room strcture established
 
 **GitHub commits:**
 - link

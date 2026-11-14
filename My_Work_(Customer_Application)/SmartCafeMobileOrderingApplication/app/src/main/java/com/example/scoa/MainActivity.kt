@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -54,7 +55,7 @@ fun AppNavigation() {
         startDestination = "start"
     ) {
         // Start page
-        composable("start") {
+        /*composable("start") {
             StartPage (
                 onLoginClick = {
                     navController.navigate("login")
@@ -66,12 +67,12 @@ fun AppNavigation() {
                     navController.navigate("home")
                 }
             )
-        }
+        }*/
 
         // Login page
         composable("login") {
             LoginScreen (
-                viewModel = remember { LoginViewModel() },
+                viewModel = viewModel(),
                 navController = navController
             )
         }
@@ -79,22 +80,8 @@ fun AppNavigation() {
         // Register page
         composable("register") {
             RegisterScreen (
-                viewModel = remember { RegisterViewModel() },
-                navController = navController,
-
-                /*onRegistrationSuccess = {
-                    // Navigate to home screen
-                    navController.navigate("home") {
-                        // Remove previous destinations from backstack
-                        // (basically back button history)
-                        popUpTo("login") {
-                            inclusive = true
-                        }
-
-                        // Prevents multiple instances of home screen
-                        launchSingleTop = true
-                    }
-                    }*/
+                viewModel = viewModel(),
+                navController = navController
             )
         }
 

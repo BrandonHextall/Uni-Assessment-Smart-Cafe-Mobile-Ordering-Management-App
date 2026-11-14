@@ -18,7 +18,7 @@ credentialsPlayServicesAuth = "1.6.0"
 googleid = "1.2.1"
 material3 = "1.4.0"
 firebaseDatabase = "23.0.0"
-roomKtx = "2.8.5"
+roomKtx = "3.0.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

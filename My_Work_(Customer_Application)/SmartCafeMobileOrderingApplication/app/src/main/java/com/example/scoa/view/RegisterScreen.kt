@@ -11,6 +11,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.scoa.viewmodel.RegisterViewModel
 
@@ -19,6 +20,9 @@ fun RegisterScreen (
     viewModel: RegisterViewModel,
     navController: NavController
 ) {
+    // Create viewModel
+    val viewModel: RegisterViewModel = viewModel()
+
     // Initiate variables for registration credential storage
     var fullName by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
