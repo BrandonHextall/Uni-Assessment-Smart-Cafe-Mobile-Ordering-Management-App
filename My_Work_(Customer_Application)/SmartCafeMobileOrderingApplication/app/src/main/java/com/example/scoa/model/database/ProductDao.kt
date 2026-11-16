@@ -22,9 +22,13 @@ interface ProductDao {
     @Query("SELECT * FROM products")
     suspend fun getAllProducts(): List<ProductEntity>
 
+    // Get product price
+    @Query("SELECT price FROM products WHERE productID = :productID")
+    suspend fun getProductPrice(productID: Int): Double
+
     // Retrieve product by ID
-    @Query("SELECT * FROM products WHERE id = :id")
-    suspend fun getProductById(id: Int): ProductEntity?
+    @Query("SELECT * FROM products WHERE productID = :productID")
+    suspend fun getProductById(productID: Int): ProductEntity?
 
     // Update existing product
     @Update

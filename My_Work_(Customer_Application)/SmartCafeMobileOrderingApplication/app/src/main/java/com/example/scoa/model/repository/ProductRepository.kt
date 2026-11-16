@@ -34,6 +34,12 @@ class ProductRepository (private val productDao: ProductDao) {
         return productDao.getAllProducts()
     }
 
+    // Get product price
+    suspend fun getProductPrice(id: Int): Double {
+        return productDao.getProductPrice(id)
+    }
+
+
     // Retrieve product by ID
     suspend fun getProductById(id: Int): ProductEntity? {
         return productDao.getProductById(id)
@@ -47,30 +53,5 @@ class ProductRepository (private val productDao: ProductDao) {
     // Delete a product
     suspend fun deleteProduct(product: ProductEntity) {
         productDao.deleteProduct(product)
-    }
-}
-class ProductRepositoryOld {
-    private val db = FirebaseFirestore.getInstance()
-
-    // Retrieve all products from Firestore
-    fun getProducts(onResult: (Result<List<ProductEntity>>) -> Unit) {
-        db.collection("menu")
-            .get()
-            .addOnSuccessListener { docs ->
-
-                // Converts each document into a Product
-                var products = docs.mapNotNull   { doc ->
-                    doc.toObject(ProductEntity::class.java)
-                }
-                // Adds image filename to Product
-                products.forEach { product ->
-                    //product.imageName = product.name.lowercase().replace(" ", "_").replace("&_", "")
-                }
-
-                onResult(Result.success(products))
-            }
-            .addOnFailureListener { exception ->
-                onResult(Result.failure(exception))
-            }
     }
 }

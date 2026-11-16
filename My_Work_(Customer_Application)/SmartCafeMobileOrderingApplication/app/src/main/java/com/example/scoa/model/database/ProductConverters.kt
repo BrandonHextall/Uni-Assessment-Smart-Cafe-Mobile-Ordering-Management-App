@@ -3,6 +3,7 @@ package com.example.scoa.model.database
 
 import androidx.room3.ColumnTypeConverter
 
+// Converts products to a saveable data type
 class ProductConverters {
 
     // Converts an ArrayList of strings into one String for SQLite storage.

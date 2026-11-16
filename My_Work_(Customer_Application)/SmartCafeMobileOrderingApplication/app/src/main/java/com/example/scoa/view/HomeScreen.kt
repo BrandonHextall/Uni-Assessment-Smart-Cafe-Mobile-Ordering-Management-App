@@ -1,5 +1,6 @@
 package com.example.scoa.view
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -18,8 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.scoa.model.database.CafeDatabase
 import com.example.scoa.model.entity.ProductEntity
+import com.example.scoa.model.repository.CartRepository
 import com.example.scoa.theme.typography
+import com.example.scoa.viewmodel.CartViewModel
 import com.example.scoa.viewmodel.HomeViewModel
 
 /*
@@ -32,18 +36,25 @@ import com.example.scoa.viewmodel.HomeViewModel
     if user is not logged in, a second popup appears asking if
     the user wants to log in or register
  */
-
+var productQuantity = 1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen (
     navController: NavController,
-               viewModel: HomeViewModel = viewModel()
+    viewModel: HomeViewModel = viewModel()
 ) {
+    val context = LocalContext.current
+    val db = CafeDatabase.getDatabase(context)
+
     // Observes ViewModel states.
     val products by viewModel.products.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val error by viewModel.error.collectAsStateWithLifecycle()
+
+    // Create CartViewModel and CartRepository
+    val cartRepository = remember { CartRepository(db.cartDao(), db.productDao(), db.userDao()) }
+    val cartViewModel = remember { CartViewModel(cartRepository) }
 
     // Variable for product popup
     var selectedProduct: ProductEntity? by remember { mutableStateOf<ProductEntity?>(null) }
@@ -81,10 +92,13 @@ fun HomeScreen (
                 selectedProduct?.let { product ->
                     ProductPopup(
                         product = product,
+                        cartViewModel = cartViewModel,
                         onDismiss = {
+                            cartViewModel.resetAddState()
                             selectedProduct = null
                         }
                     )
+                    Log.d("Product", "$product")
                 }
             }
         }
@@ -147,9 +161,12 @@ fun MakeProductCard(product: ProductEntity, onClick: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductPopup(product: ProductEntity, onDismiss: () -> Unit) {
+fun ProductPopup(product: ProductEntity, cartViewModel: CartViewModel, onDismiss: () -> Unit) {
     // LocalContext retrieves Android app resources like Drawable images, Strings, Colours and application information
     val context = LocalContext.current
+    val addSuccess by cartViewModel.addSuccess.collectAsState()
+    val isLoading by cartViewModel.isLoading.collectAsState()
+    var quantity by rememberSaveable(product.productID) { mutableIntStateOf(1) }
 
     // Gets image associated with Product
     val imageResource = remember(product.imageName) {
@@ -166,6 +183,8 @@ fun ProductPopup(product: ProductEntity, onDismiss: () -> Unit) {
             TextButton (
                 onClick = {
                     // Add product to basket
+                    cartViewModel.addToCart(product.productID, quantity)
+                    onDismiss()
                 }
             ) {
                 Text("Add to basket")
@@ -179,7 +198,6 @@ fun ProductPopup(product: ProductEntity, onDismiss: () -> Unit) {
             }
         },
         text = {
-            var quantity by rememberSaveable { mutableIntStateOf(0) }
             Column() {
                 Text (
                     text = product.name,
@@ -198,7 +216,7 @@ fun ProductPopup(product: ProductEntity, onDismiss: () -> Unit) {
                 Text("Category: ${product.category}") // Needs to be modified to retrieve category from Firebase
                 OutlinedTextField (
                     value = quantity.toString(),
-                    onValueChange = { quantity = it.toInt() },
+                    onValueChange = { quantity = it.toIntOrNull() ?: 0 },
                     label = { Text("Quantity") },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),

@@ -20,9 +20,6 @@ fun RegisterScreen (
     viewModel: RegisterViewModel,
     navController: NavController
 ) {
-    // Create viewModel
-    val viewModel: RegisterViewModel = viewModel()
-
     // Initiate variables for registration credential storage
     var fullName by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }

@@ -2,6 +2,9 @@ package com.example.scoa.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.scoa.model.authentication.FirebaseManager
+import com.example.scoa.utils.validateLogin
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -22,12 +25,15 @@ class LoginViewModel : ViewModel() {
         // Prevents another login attempt while one is in progress
         if (_isLoading.value) return
 
-        // Checks if inputs are blank
-        if (email.isBlank() || password.isBlank()) {
-            _isLoading.value = true
-            _error.value = "Fill in all fields"
+        // Calls validation function
+        val validationError = validateLogin(email, password)
+        if (validationError != null) {
+            _error.value = validationError
             return
         }
+
+        _isLoading.value = true
+        _error.value = ""
 
         firebase.login(email.trim(), password) { result ->
             result.onSuccess {
@@ -35,8 +41,12 @@ class LoginViewModel : ViewModel() {
             }
             // The ?.message only collects the string if it available
             // Helps prevent errors and exceptions
-            result.onFailure {
-                _error.value = result.exceptionOrNull()?.message ?: "Login failed"
+            result.onFailure { e ->
+                _error.value = when (e) {
+                    is FirebaseAuthInvalidCredentialsException -> "Incorrect email or password"
+                    else -> e.message ?: "Login failed"
+                }
+                //_error.value = result.exceptionOrNull()?.message ?: "Login failed"
             }
         }
 

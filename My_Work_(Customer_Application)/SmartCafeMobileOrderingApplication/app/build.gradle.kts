@@ -49,8 +49,8 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.androidx.foundation)
+    implementation(libs.androidx.junit.ktx)
     implementation(libs.androidx.material3)
-    //implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.ui.text)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
@@ -106,4 +106,14 @@ dependencies {
     // Room dependencies
     implementation("androidx.room3:room3-runtime:3.0.3")
     ksp("androidx.room3:room3-compiler:3.0.3")
+
+    // Room testing
+    androidTestImplementation("androidx.room3:room3-testing:3.0.3")
+
+    // Android instrumented testing
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }

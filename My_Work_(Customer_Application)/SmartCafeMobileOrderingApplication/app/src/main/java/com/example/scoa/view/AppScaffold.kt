@@ -12,7 +12,15 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.scoa.model.authentication.FirebaseManager
-import com.example.scoa.model.database.UserDao
+
+// Temporary imports for user logging
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import com.example.scoa.model.database.CafeDatabase
+import androidx.compose.ui.platform.LocalContext
+import android.util.Log
 
 @Composable
 fun AppScaffold(
@@ -22,6 +30,11 @@ fun AppScaffold(
     val firebase = remember { FirebaseManager() }
     val loggedIn = firebase.isUserLoggedIn()
     var expanded by remember { mutableStateOf(false) }
+
+    // Temporary for user logging
+    val context = LocalContext.current
+    val userDao = remember { CafeDatabase.getDatabase(context).userDao() }
+    val cartDao = remember { CafeDatabase.getDatabase(context).cartDao() }
 
     // Bottom bar of page
     Scaffold(
@@ -99,7 +112,33 @@ fun AppScaffold(
                     // Menu button
                     Column (horizontalAlignment = Alignment.CenterHorizontally) {
                         IconButton (
-                            onClick = { /* do something */ },
+                            onClick = {
+
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    // Retrieve all users from database
+                                    val users = userDao.getAllUsers()
+                                    val cartItems = cartDao.getAllCartItems()
+                                    Log.d("Users", "==================================== ALL REGISTERED USERS ====================================")
+                                    users.forEach { user ->
+                                        Log.d("User", """
+                                            User ID: ${user.userID}
+                                            Firebase UID: ${user.firebaseUID}
+                                            Full Name: ${user.fullName}
+                                            Email: ${user.email}
+                                            Delivery Address: ${user.deliveryAddress}
+                                        """.trimIndent())
+                                    }
+                                    Log.d("Users", "Total users: ${users.size}")
+                                    Log.d("Carts", "Total carts: ${cartDao.getAllCarts().size}")
+                                    Log.d("CartItems", "==================================== ALL CART ITEMS ====================================")
+                                    Log.d("CartItems", "Size: ${cartItems.size}")
+                                    Log.d(
+                                        "CartItems",
+                                        cartItems.toString()
+                                        )
+
+                                }
+                            },
                             modifier = Modifier.size(50.dp)
                         ) {
                             Icon(
@@ -126,7 +165,15 @@ fun AppScaffold(
                     }
                     // Cart button
                     Column (horizontalAlignment = Alignment.CenterHorizontally) {
-                        IconButton(onClick = { /* do something */ }) {
+                        IconButton(onClick = {
+                            // Navigate to cart page
+                            navController.navigate("cart") {
+                                popUpTo(0) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        }) {
                             Icon (
                                 painter = rememberVectorPainter(Icons.Default.ShoppingCart),
                                 contentDescription = "Localized description",

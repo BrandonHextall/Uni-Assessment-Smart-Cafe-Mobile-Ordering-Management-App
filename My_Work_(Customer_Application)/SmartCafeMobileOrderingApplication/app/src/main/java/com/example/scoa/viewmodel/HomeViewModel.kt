@@ -20,7 +20,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val db = CafeDatabase.getDatabase(application)
 
     private val productRepository = ProductRepository(db.productDao())
-    private val userRepository = UserRepository(db.userDao())
+    private val userRepository = UserRepository(db.userDao(), db.cartDao())
 
 
     // MutableStateFlow stores the data

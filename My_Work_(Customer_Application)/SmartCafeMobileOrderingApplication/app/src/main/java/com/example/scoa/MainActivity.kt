@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.scoa.theme.AppTheme
+import com.example.scoa.view.CartScreen
 
 // Temporary while converting to MVVM format
 
@@ -85,9 +86,14 @@ fun AppNavigation() {
             )
         }
 
+        // Cart page
+        composable("cart") {
+            CartScreen(navController)
+        }
+
         composable("home") { HomeScreen(navController) }
 
         // Comment this line when using the start page
-        composable("start") { HomeScreen(navController)}
+        composable("start") { HomeScreen(navController) }
     }
 }

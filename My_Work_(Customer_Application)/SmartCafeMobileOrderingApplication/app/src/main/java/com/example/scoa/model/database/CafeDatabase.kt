@@ -7,17 +7,29 @@ import androidx.room3.RoomDatabase
 import com.example.scoa.model.entity.ProductEntity
 import com.example.scoa.model.entity.UserEntity
 import androidx.room3.ColumnTypeConverters
+import com.example.scoa.model.entity.CartEntity
+import com.example.scoa.model.entity.CartItemEntity
+import com.example.scoa.model.entity.OrderEntity
+import com.example.scoa.model.entity.OrderItemEntity
 
 // Defines database and specifies entities it contains
 @Database (
-    entities = [UserEntity::class, ProductEntity::class],
-    version = 3
+    entities = [
+        UserEntity::class,
+        ProductEntity::class,
+        CartEntity::class,
+        CartItemEntity::class,
+        OrderEntity::class,
+        OrderItemEntity::class
+    ],
+    version = 7
 )
 @ColumnTypeConverters(ProductConverters::class)
 abstract class CafeDatabase : RoomDatabase() {
     // Gives access to UserDao operations
     abstract fun userDao(): UserDao
     abstract fun productDao(): ProductDao
+    abstract fun cartDao(): CartDao
 
     companion object {
         // Holds the only database instance shared through the app

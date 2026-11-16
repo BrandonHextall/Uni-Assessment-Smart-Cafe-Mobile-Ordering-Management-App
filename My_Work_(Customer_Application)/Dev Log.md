@@ -256,7 +256,7 @@ Record development activities chronologically.
 - Display locally stored products on home screen from local database
 
 **Work completed:**
-- Created `InitialProducts.kt` with pre-existing products fro Firestore data
+- Created _InitialProducts.kt_ with pre-existing products fro Firestore data
 - Restructured ProductRepository to retrieve and manage products through ProductDao
 - Implemented automatic product insertion when product table is empty
 - Connected product-loading to HomeViewModel
@@ -269,21 +269,31 @@ Record development activities chronologically.
 - Initial SQLite/Room strcture established
 
 **GitHub commits:**
-- link
+- 23bc1a47dad1c6c180d42e0070ab28a111e4ca36
 
-## Development Session 13 – [Date]
+## Development Session 13 – 16/11/2026
 
 **Objectives:**
-- Obj
+- Implement cart functionality
+- Connecet cart to authenticated user'a account
+Allow customers to add products and specify quantities
 
 **Work completed:**
-- Complete
+- Implemented logic to create a cart if the suer does not already have one
+- Implemented _CartRepository.addToCart()_ to retrieve the authenticated user and associated account
+- Added product insertion fucntionality
+- Added product update functionality
+- Integrated _add-to-basket_ functionality into product pop-up
+- Identified and corrected unique index configuration in _CartItemEntity_
 
 **Issues encountered:**
-- None
+- _CartViewModel_ initially failed due to required repository parameter
+- Firebase UID lookup returned *null* after restarting application
 
 **Outcome:**
-- outcome
+- Established intitial shopping cart functionality
+- Successfully connected product selection, quantity input and cart database operations
+- Improved error handling and debugging
 
 **GitHub commits:**
 - link

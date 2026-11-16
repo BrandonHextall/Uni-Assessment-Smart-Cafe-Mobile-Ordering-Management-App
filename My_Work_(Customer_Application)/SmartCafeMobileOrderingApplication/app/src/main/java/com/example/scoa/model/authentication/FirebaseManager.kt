@@ -37,11 +37,7 @@ class FirebaseManager {
                     onResult (Result.failure(Exception("Unable to retrieve user ID")))
                 }
             }
-            .addOnFailureListener { task ->
-                onResult (
-                    Result.failure(Exception("Registration failed"))
-                )
-            }
+            .addOnFailureListener { e -> onResult(Result.failure(e)) }
     }
 
     fun logout() {

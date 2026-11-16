@@ -11,14 +11,23 @@ import com.example.scoa.model.entity.UserEntity
 interface UserDao {
     @Insert
     // Suspend functions can pause execution while waiting for something else to finish
-    suspend fun insertUser(user: UserEntity)
+    suspend fun insertUser(user: UserEntity): Long
+
     // Retrieves a customer with their UID
     // Null if no matching customer exists
     @Query("""
         SELECT * FROM users WHERE firebaseUID = :uid
         LIMIT 1
     """)
-    suspend fun getUser(uid: String): UserEntity?
+    suspend fun getUserByUid(uid: String): UserEntity?
+
+    // Retrieves customer by their local ID
+    // Null if no matching customer exists
+    @Query("""
+        SELECT * FROM users WHERE userID = :id
+        LIMIT 1
+    """)
+    suspend fun getUserById(id: Int): UserEntity?
 
     // Retrieves every customer record
     @Query("SELECT * FROM USERS")
