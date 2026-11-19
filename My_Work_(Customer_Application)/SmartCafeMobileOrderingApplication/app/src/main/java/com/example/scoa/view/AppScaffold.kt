@@ -138,6 +138,14 @@ fun AppScaffold(
                                         )
 
                                 }
+
+                                // Navigate to menu page
+                                navController.navigate("home") {
+                                    popUpTo(0) {
+                                        inclusive = true
+                                    }
+                                    launchSingleTop = true
+                                }
                             },
                             modifier = Modifier.size(50.dp)
                         ) {

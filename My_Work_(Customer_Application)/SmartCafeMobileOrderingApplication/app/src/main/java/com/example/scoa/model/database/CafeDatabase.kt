@@ -22,7 +22,7 @@ import com.example.scoa.model.entity.OrderItemEntity
         OrderEntity::class,
         OrderItemEntity::class
     ],
-    version = 7
+    version = 8
 )
 @ColumnTypeConverters(ProductConverters::class)
 abstract class CafeDatabase : RoomDatabase() {

@@ -7,13 +7,13 @@ import androidx.compose.ui.graphics.Color
 
 // Custom colour scheme
 private val CustomTheme = darkColorScheme(
-    primary = caramel,
+    primary = oliveTurd,
     onPrimary = textDark,
 
-    secondary = lightCaramel,
+    secondary = beige,
     onSecondary = textLight,
 
-    background = maroon,
+    background = caramel,
     onBackground = textLight,
 
     surface = Color(0xFF4E342E),

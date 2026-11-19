@@ -296,21 +296,26 @@ Allow customers to add products and specify quantities
 - Improved error handling and debugging
 
 **GitHub commits:**
-- link
+- e6ea84a508e2551a4e4a1b4da0ed4b1c19bcae40
 
 ## Development Session 14 – [Date]
 
 **Objectives:**
-- Obj
+- Implment cart item display
+- Display product information and quantity
 
 **Work completed:**
-- Complete
+- Removed Jetpack dependency and compiler issues
+- Implemented initial cart display using *LazyColumn*
+- Integrated _CartItemEntity_ and _ProductEntity_ to retrieve and display product info.
+- Modified colour scheme to be more visually appealing and easier on the eyes.
 
 **Issues encountered:**
-- None
+- Cart display and dependecy issues may still need further investigating
 
 **Outcome:**
-- outcome
+- Calculate cart subtotal
+- Cart display implementation partially complete
 
 **GitHub commits:**
 - link

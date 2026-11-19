@@ -39,7 +39,7 @@ class CartRepository (
     // -----------------------
 
     // Add product to cart
-    suspend fun addToCart(productID: Int, quantity: Int): Boolean {
+    suspend fun addToCart(productID: Int, quantity: Int, price: Double): Boolean {
         Log.d("USER_DEBUG", "All users: ${userDao.getAllUsers()}")
         // Get current user ID
         val firebaseUser = FirebaseAuth.getInstance().currentUser ?: return false
@@ -79,18 +79,31 @@ class CartRepository (
                 CartItemEntity(
                     cartID = cartID,
                     productID = productID,
-                    quantity = quantity
+                    quantity = quantity,
+                    price = price
                 )
             )
-
             Log.d("CART_DEBUG", "Insert result: $result")
         }
         return true
     }
 
     // Retrieve all products belonging to a cart
-    suspend fun getCartItemsByCartID(cartID: Int): List<CartItemEntity> {
-        return cartDao.getCartItems(cartID)
+    suspend fun getCartItemsByCartID(): List<CartItemEntity> {
+        println("------------------------------- getCartItemsByCartID -------------------------------")
+        val firebaseUser = FirebaseAuth.getInstance().currentUser ?: return emptyList()
+        Log.d("CART_DEBUG", "Firebase user: $firebaseUser")
+        val uid = firebaseUser.uid
+        Log.d("CART_DEBUG", "Firebase UID: $uid")
+        val user = userDao.getUserByUid(uid) ?: return emptyList()
+        Log.d("CART_DEBUG", "User: $user")
+        val localID = user.userID
+        Log.d("CART_DEBUG", "Local ID: $localID")
+        val cart = cartDao.getCartByUserId(localID) ?: return emptyList()
+        Log.d("CART_DEBUG", "Cart: $cart")
+        println("------------------------------------------------------------------------------------------")
+
+        return cartDao.getCartItems(cart.cartID)
     }
 
     // Retrieve specific product from cart

@@ -16,5 +16,7 @@ data class CartItemEntity (
     @ColumnInfo("productID")
     val productID: Int,
     @ColumnInfo("quantity")
-    val quantity: Int = 0
+    val quantity: Int = 0,
+    @ColumnInfo("price")
+    val price: Double = 0.0
 )

@@ -183,7 +183,7 @@ fun ProductPopup(product: ProductEntity, cartViewModel: CartViewModel, onDismiss
             TextButton (
                 onClick = {
                     // Add product to basket
-                    cartViewModel.addToCart(product.productID, quantity)
+                    cartViewModel.addToCart(product.productID, quantity, product.price)
                     onDismiss()
                 }
             ) {

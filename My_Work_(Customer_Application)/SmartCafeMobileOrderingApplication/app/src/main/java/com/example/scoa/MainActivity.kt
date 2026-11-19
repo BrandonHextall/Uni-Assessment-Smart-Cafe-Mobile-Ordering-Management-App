@@ -24,8 +24,12 @@ import com.example.scoa.view.HomeScreen
 import com.example.scoa.view.StartPage
 import com.example.scoa.view.LoginScreen
 import com.example.scoa.view.RegisterScreen
+
+// Application ViewModels
 import com.example.scoa.viewmodel.LoginViewModel
 import com.example.scoa.viewmodel.RegisterViewModel
+import com.example.scoa.viewmodel.HomeViewModel
+import com.example.scoa.viewmodel.CartViewModel
 
 val pinyonScript = FontFamily(Font(R.font.pinyonscript_regular))
 
@@ -88,7 +92,10 @@ fun AppNavigation() {
 
         // Cart page
         composable("cart") {
-            CartScreen(navController)
+            CartScreen (
+                navController = navController,
+                //viewModel = viewModel()
+            )
         }
 
         composable("home") { HomeScreen(navController) }
