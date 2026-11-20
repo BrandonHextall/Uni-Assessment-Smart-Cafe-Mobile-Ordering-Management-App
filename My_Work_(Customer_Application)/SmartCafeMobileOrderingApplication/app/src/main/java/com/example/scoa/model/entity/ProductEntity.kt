@@ -1,12 +1,11 @@
 package com.example.scoa.model.entity
 
 import androidx.room3.ColumnInfo
-import androidx.room3.ColumnTypeConverter
 import androidx.room3.Entity
 import androidx.room3.PrimaryKey
 
 @Entity(tableName = "products")
-data class ProductEntity (
+data class ProductEntity(
     @PrimaryKey(autoGenerate = true)
     val productID: Int = 0,
     @ColumnInfo("name")

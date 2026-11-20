@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.example.scoa.model.authentication.FirebaseManager
 import com.example.scoa.utils.validateLogin
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -36,9 +35,7 @@ class LoginViewModel : ViewModel() {
         _error.value = ""
 
         firebase.login(email.trim(), password) { result ->
-            result.onSuccess {
-                _loggedIn.value = true
-            }
+            result.onSuccess { _loggedIn.value = true }
             // The ?.message only collects the string if it available
             // Helps prevent errors and exceptions
             result.onFailure { e ->

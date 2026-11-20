@@ -298,7 +298,7 @@ Allow customers to add products and specify quantities
 **GitHub commits:**
 - e6ea84a508e2551a4e4a1b4da0ed4b1c19bcae40
 
-## Development Session 14 – [Date]
+## Development Session 14 – 19/11/2026
 
 **Objectives:**
 - Implment cart item display
@@ -318,21 +318,33 @@ Allow customers to add products and specify quantities
 - Cart display implementation partially complete
 
 **GitHub commits:**
-- link
+- c37efdce0350e36d19952274b4d5fa1f25785d7e
 
-## Development Session 15 – [Date]
+## Development Session 15 – 20/11/2026
 
 **Objectives:**
-- Obj
+- Improve cart layout
+- Fix cart screen scrolling issue
+- Implement checkout screen with accurate order summary and pricing
 
 **Work completed:**
-- Complete
+- Improved _CartScreen_ layout so that cart list scrolls independantly while keeping subtotal and checkoug buttons fixed
+- Investigated *LazyColumn* scrolling behaviour
+- Updated cart functionality to preload product info (as opposed to re-fetching the data every time it needs loading)
+- Modified _CheckoutScreen_ to use fixed-bottom layout
+- Implemented order summary
+- Added functional increment and decrement buttons for cart items
+- Implemented delete cart item functionality
+- Replaced *TextField* with increment and decrement buttons when adding producs to cart
 
 **Issues encountered:**
-- None
+- Cart scrolling occasionally caused entire page to scroll
+- Checkout displayed incorrect order total due to product quantities not being correctly included in subtotal calculation
 
 **Outcome:**
-- outcome
+- Improved layout and scrolling behvaiour of cart and checkout screens
+- Checkout displays structured order summary with additional fees
+- Corrected subtotal calculation for product quantities
 
 **GitHub commits:**
 - link

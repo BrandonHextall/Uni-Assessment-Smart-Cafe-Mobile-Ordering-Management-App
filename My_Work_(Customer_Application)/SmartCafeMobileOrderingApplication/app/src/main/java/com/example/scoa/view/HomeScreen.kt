@@ -5,17 +5,17 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -40,10 +40,7 @@ var productQuantity = 1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen (
-    navController: NavController,
-    viewModel: HomeViewModel = viewModel()
-) {
+fun HomeScreen(navController: NavController, viewModel: HomeViewModel = viewModel()) {
     val context = LocalContext.current
     val db = CafeDatabase.getDatabase(context)
 
@@ -60,12 +57,11 @@ fun HomeScreen (
     var selectedProduct: ProductEntity? by remember { mutableStateOf<ProductEntity?>(null) }
 
     // Load products when the screen first appears
-    LaunchedEffect(Unit) {
-        viewModel.loadProducts()
-    }
+    LaunchedEffect(Unit) { viewModel.loadProducts() }
+
     // Display products here
     AppScaffold(navController) { innerPadding ->
-        Column (
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
@@ -78,16 +74,14 @@ fun HomeScreen (
             if (isLoading) CircularProgressIndicator()
 
             // Displays an error if retrieval fails.
-            else if (error.isNotEmpty()) Text (text = error, color = MaterialTheme.colorScheme.error)
+            else if (error.isNotEmpty()) Text(text = error, color = MaterialTheme.colorScheme.error)
 
             // Displays a message if no products are found.
             else if (products.isEmpty()) Text("No products found")
 
             // Displays retrieved products.
             else {
-                MakeProductGrid(products, onProductClick = { product ->
-                    selectedProduct = product
-                })
+                MakeProductGrid(products, onProductClick = { product -> selectedProduct = product })
 
                 selectedProduct?.let { product ->
                     ProductPopup(
@@ -107,24 +101,20 @@ fun HomeScreen (
 
 // Creates grid where products are displayed
 @Composable
-fun MakeProductGrid(products: List<ProductEntity>, onProductClick: (ProductEntity) -> Unit) {
-    LazyVerticalGrid (
+fun MakeProductGrid(products: List<ProductEntity>, onProductClick:(ProductEntity) -> Unit) {
+    LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = PaddingValues(0.dp)
     ) {
-        items(products) { product ->
-            MakeProductCard(product, onClick = {
-                onProductClick(product)
-            })
-        }
+        items(products) { product -> MakeProductCard(product, onClick = { onProductClick(product) }) }
     }
 }
 
 // Creates a card for each product
 @Composable
-fun MakeProductCard(product: ProductEntity, onClick: () -> Unit) {
+fun MakeProductCard(product: ProductEntity, onClick:() -> Unit) {
     Surface(onClick = onClick) {
         Column(
             modifier = Modifier
@@ -144,13 +134,13 @@ fun MakeProductCard(product: ProductEntity, onClick: () -> Unit) {
 
             // If image is found, display it.
             if (imageResource != 0) {
-                Image (
+                Image(
                     painter = painterResource(id = imageResource),
                     contentDescription = product.name,
                     modifier = Modifier.fillMaxSize().aspectRatio(1f)
                 )
             }
-            Text (
+            Text(
                 text = product.name,
                 textAlign = TextAlign.Center,
                 style = typography.titleMedium
@@ -161,11 +151,9 @@ fun MakeProductCard(product: ProductEntity, onClick: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductPopup(product: ProductEntity, cartViewModel: CartViewModel, onDismiss: () -> Unit) {
+fun ProductPopup(product: ProductEntity, cartViewModel: CartViewModel, onDismiss:() -> Unit) {
     // LocalContext retrieves Android app resources like Drawable images, Strings, Colours and application information
     val context = LocalContext.current
-    val addSuccess by cartViewModel.addSuccess.collectAsState()
-    val isLoading by cartViewModel.isLoading.collectAsState()
     var quantity by rememberSaveable(product.productID) { mutableIntStateOf(1) }
 
     // Gets image associated with Product
@@ -176,36 +164,28 @@ fun ProductPopup(product: ProductEntity, cartViewModel: CartViewModel, onDismiss
             context.packageName
         )
     }
-    AlertDialog (
+    AlertDialog(
         title = { product.name },
         onDismissRequest = onDismiss,
         confirmButton = {
-            TextButton (
+            TextButton(
                 onClick = {
                     // Add product to basket
                     cartViewModel.addToCart(product.productID, quantity, product.price)
                     onDismiss()
                 }
-            ) {
-                Text("Add to basket")
-            }
+            ) { Text("Add to basket") }
         },
-        dismissButton = {
-            TextButton (
-                onClick = onDismiss
-            ) {
-                Text("Dismiss")
-            }
-        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Dismiss") } },
         text = {
             Column() {
-                Text (
+                Text(
                     text = product.name,
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 10.dp)
                 )
                 Text(product.description)
-                Image (
+                Image(
                     painter = painterResource(imageResource),
                     contentDescription = product.name,
                     modifier = Modifier.fillMaxWidth().aspectRatio(1.3f).padding(0.dp, 10.dp)
@@ -214,14 +194,24 @@ fun ProductPopup(product: ProductEntity, cartViewModel: CartViewModel, onDismiss
                 Text(if (product.allergens.isEmpty()) "None" else "Allergens: ${product.allergens.joinToString(", ")}")
                 Text("Availability: ${product.availability}")
                 Text("Category: ${product.category}") // Needs to be modified to retrieve category from Firebase
-                OutlinedTextField (
-                    value = quantity.toString(),
-                    onValueChange = { quantity = it.toIntOrNull() ?: 0 },
-                    label = { Text("Quantity") },
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.width(80.dp)
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text("Quantity: ")
+
+                    // Decrement button
+                    IconButton(
+                        onClick = { if (quantity > 1) quantity-- else quantity = 1 },
+                        enabled = quantity > 1
+                    ) { Text("-", fontSize = 25.sp) }
+
+                    // Display quantity
+                    Text(text = quantity.toString(), style = MaterialTheme.typography.titleMedium)
+
+                    // Increment button
+                    IconButton(onClick = { quantity++ }) { Text("+", fontSize = 25.sp) }
+                }
             }
         }
     )

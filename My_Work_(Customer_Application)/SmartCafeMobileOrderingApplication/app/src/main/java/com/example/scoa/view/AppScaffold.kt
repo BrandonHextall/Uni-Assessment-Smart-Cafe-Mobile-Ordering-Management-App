@@ -41,18 +41,18 @@ fun AppScaffold(
 
         bottomBar = {
             BottomAppBar(containerColor = MaterialTheme.colorScheme.primary) {
-                Row (
+                Row(
                     modifier = Modifier.fillMaxWidth().padding(20.dp, 0.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     // Profile button and dropdown
                     Box {
-                        Column (horizontalAlignment = Alignment.CenterHorizontally) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             IconButton(onClick = {
                                 if (loggedIn) expanded = !expanded
                                 else navController.navigate("login")
                             }, modifier = Modifier.size(50.dp)) {
-                                Icon (
+                                Icon(
                                     painter = rememberVectorPainter(Icons.Default.AccountBox),
                                     contentDescription = "Account",
                                     modifier = Modifier.size(50.dp)
@@ -60,21 +60,21 @@ fun AppScaffold(
                             }
                             Text("Profile")
                         }
-                        DropdownMenu (
+                        DropdownMenu(
                             expanded = expanded,
                             onDismissRequest = { expanded = false },
                             containerColor = MaterialTheme.colorScheme.primary,
                             offset = DpOffset(x = (-120).dp, y = 0.dp)
                         ) {
                             if (loggedIn) {
-                                DropdownMenuItem (
+                                DropdownMenuItem(
                                     text = { Text("My Account") },
                                     onClick = {
                                         expanded = false
                                         // Navigate to account
                                     }
                                 )
-                                DropdownMenuItem (
+                                DropdownMenuItem(
                                     text = { Text("Sign Out") },
                                     onClick = {
                                         expanded = false
@@ -92,14 +92,14 @@ fun AppScaffold(
                                     }
                                 )
                             } else {
-                                DropdownMenuItem (
+                                DropdownMenuItem(
                                     text = { Text("Login") },
                                     onClick = {
                                         expanded = false
                                         // Navigate to login
                                     }
                                 )
-                                DropdownMenuItem (
+                                DropdownMenuItem(
                                     text = { Text("Register") },
                                     onClick = {
                                         expanded = false
@@ -110,8 +110,8 @@ fun AppScaffold(
                         }
                     }
                     // Menu button
-                    Column (horizontalAlignment = Alignment.CenterHorizontally) {
-                        IconButton (
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        IconButton(
                             onClick = {
 
                                 CoroutineScope(Dispatchers.IO).launch {
@@ -132,11 +132,7 @@ fun AppScaffold(
                                     Log.d("Carts", "Total carts: ${cartDao.getAllCarts().size}")
                                     Log.d("CartItems", "==================================== ALL CART ITEMS ====================================")
                                     Log.d("CartItems", "Size: ${cartItems.size}")
-                                    Log.d(
-                                        "CartItems",
-                                        cartItems.toString()
-                                        )
-
+                                    Log.d("CartItems", cartItems.toString())
                                 }
 
                                 // Navigate to menu page
@@ -158,12 +154,12 @@ fun AppScaffold(
                         Text("Menu")
                     }
                     // Orders button
-                    Column (horizontalAlignment = Alignment.CenterHorizontally) {
-                        IconButton (
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        IconButton(
                             onClick = { /* do something */ },
                             modifier = Modifier.size(50.dp)
                         ) {
-                            Icon (
+                            Icon(
                                 painter = rememberVectorPainter(Icons.Default.Receipt),
                                 contentDescription = "Localized description",
                                 modifier = Modifier.size(50.dp)
@@ -172,7 +168,7 @@ fun AppScaffold(
                         Text("Orders")
                     }
                     // Cart button
-                    Column (horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         IconButton(onClick = {
                             // Navigate to cart page
                             navController.navigate("cart") {
@@ -182,7 +178,7 @@ fun AppScaffold(
                                 launchSingleTop = true
                             }
                         }) {
-                            Icon (
+                            Icon(
                                 painter = rememberVectorPainter(Icons.Default.ShoppingCart),
                                 contentDescription = "Localized description",
                                 modifier = Modifier.size(50.dp)

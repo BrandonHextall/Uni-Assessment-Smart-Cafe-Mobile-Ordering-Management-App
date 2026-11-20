@@ -15,7 +15,7 @@ import com.example.scoa.viewmodel.LoginViewModel
 
 
 @Composable
-fun LoginScreen (
+fun LoginScreen(
     // Receives authentication repository through constructor
     viewModel: LoginViewModel,
     navController: NavController
@@ -31,14 +31,14 @@ fun LoginScreen (
     var password by remember { mutableStateOf("") }
 
     // Runs whenever login status changes
-    // LaunchedEffect can run suspend (pausable) functions
+    // LaunchedEffect can run suspend(pausable) functions
     LaunchedEffect(loggedIn) {
         if (loggedIn) {
             // Navigate to home screen
             navController.navigate("home") {
 
                 // Remove previous destinations from backstack
-                // (basically back button history)
+                //(basically back button history)
                 popUpTo("login") { inclusive = true }
 
                 // Prevents multiple instances of home screen
@@ -50,9 +50,9 @@ fun LoginScreen (
     // Login screen layout
 
     // Add placeholder image to page
-    Column (modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),) {
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),) {
         // Email field
-        OutlinedTextField (
+        OutlinedTextField(
             value = email,
             // When value changes, update variable to new value
             onValueChange = { email = it },
@@ -62,7 +62,7 @@ fun LoginScreen (
         )
 
         // Password field
-        OutlinedTextField (
+        OutlinedTextField(
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
@@ -71,7 +71,7 @@ fun LoginScreen (
         )
 
         // Login button
-        Button (
+        Button(
             onClick = { viewModel.login(email, password) },
             modifier = Modifier.fillMaxWidth(),
             enabled = !isLoading
@@ -81,10 +81,10 @@ fun LoginScreen (
         }
 
         // Clickable link to switch to register page
-        Button (onClick = {
+        Button(onClick = {
             navController.navigate("register") {
                 // Remove previous destinations from backstack
-                // (basically back button history)
+                //(basically back button history)
                 popUpTo(0) { inclusive = true }
 
                 // Prevents multiple instances of home screen

@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -14,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.scoa.theme.AppTheme
 import com.example.scoa.view.CartScreen
+import com.example.scoa.view.CheckoutScreen
 
 // Temporary while converting to MVVM format
 
@@ -91,12 +91,10 @@ fun AppNavigation() {
         }
 
         // Cart page
-        composable("cart") {
-            CartScreen (
-                navController = navController,
-                //viewModel = viewModel()
-            )
-        }
+        composable("cart") { CartScreen (navController = navController)}
+
+        // Checkout page
+        composable("checkout") { CheckoutScreen(navController) }
 
         composable("home") { HomeScreen(navController) }
 

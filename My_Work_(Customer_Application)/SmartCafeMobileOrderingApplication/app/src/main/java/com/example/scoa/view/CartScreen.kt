@@ -2,12 +2,14 @@ package com.example.scoa.view
 
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,16 +27,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.example.scoa.model.database.ProductDao
 import com.example.scoa.model.entity.CartItemEntity
 import com.example.scoa.model.entity.ProductEntity
 
 @Composable
-fun CartScreen (
+fun CartScreen(
     navController: NavController,
 ) {
     val context = LocalContext.current
@@ -43,6 +43,9 @@ fun CartScreen (
     // Create CartViewModel and CartRepository
     val cartRepository = remember { CartRepository(db.cartDao(), db.productDao(), db.userDao()) }
     val cartViewModel = remember { CartViewModel(cartRepository) }
+
+    // Save cart items with products to avoid re-collecting later
+    val cartWithProducts = cartViewModel.cartItemsWithProducts.collectAsState().value
 
     // Create DAOs
     val cartDao = remember { db.cartDao() }
@@ -57,96 +60,132 @@ fun CartScreen (
     }
 
     AppScaffold(navController) { innerPadding ->
-        Column (
-            modifier = Modifier.fillMaxSize()
-                .padding(16.dp),
+        Column(
+            modifier = Modifier.fillMaxSize().padding(innerPadding).padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text("Your Cart", style = MaterialTheme.typography.headlineMedium)
+            Text("Your Cart", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onPrimary)
 
             Log.d("CART_SCREEN_DEBUG", "User cart: $userCart")
 
-            DisplayCartContents(cart = userCart, dao = productDao)
+            if (userCart.isEmpty()) Text("Your cart is currently empty.", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onPrimary)
+            else {
+                DisplayCartContents(cart = cartWithProducts, viewModel = cartViewModel, modifier = Modifier.weight(1f))
 
-            // Subtotal
-            var subtotal by remember { mutableStateOf(0.0) }
-            LaunchedEffect(userCart) {
-                subtotal = userCart.sumOf { it.price * it.quantity }
+                // Subtotal
+                val subtotal = cartWithProducts.sumOf { it.first.price * it.first.quantity }
+                //LaunchedEffect(userCart) { subtotal = userCart.sumOf { it.price * it.quantity } }
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        "Subtotal: £%.2f".format(subtotal),
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                    Button(onClick = {
+                        // Checkout screen
+                        navController.navigate("checkout")
+                    }) {
+                        Text("Checkout", fontSize = MaterialTheme.typography.bodyLarge.fontSize)
+                    }
+                }
             }
-            Text("Subtotal: £%.2f".format(subtotal), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onPrimary)
         }
     }
 }
 
 @Composable
-fun DisplayCartContents(cart: List<CartItemEntity>, dao: ProductDao) {
+fun DisplayCartContents(cart: List<Pair<CartItemEntity, ProductEntity>>, viewModel: CartViewModel, modifier: Modifier = Modifier) {
     // Display cart contents
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        items(cart.size, key = { cart[it].productID }) { product ->
-            DisplayCartItem(item = cart[product], dao = dao)
+    LazyColumn(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(bottom = 16.dp)
+    ) {
+        items(cart, key = { it.first.productID }) { product ->
+            DisplayCartItem(item = product, viewModel = viewModel)
         }
     }
 }
 
 @Composable
-fun DisplayCartItem(item: CartItemEntity, dao: ProductDao) {
-    var product by remember { mutableStateOf<ProductEntity?>(null) }
-    LaunchedEffect(item.productID) {
-        product = dao.getProductById(item.productID)
-    }
-    val currentProduct = product
-    if (currentProduct != null) {
-        Card (
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(10.dp),
-            elevation = CardDefaults.cardElevation(2.dp),
-            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary)
+fun DisplayCartItem(item: Pair<CartItemEntity, ProductEntity>, viewModel: CartViewModel) {
+    val currentItem = item.first
+    val currentProduct = item.second
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(10.dp),
+        elevation = CardDefaults.cardElevation(2.dp),
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Row (
-                modifier = Modifier.fillMaxWidth().padding(6.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                // Product image
-                val imageResource = LocalContext.current.resources.getIdentifier (currentProduct.imageName, "drawable", LocalContext.current.packageName)
-                if (imageResource != 0) {
-                    Image (
-                        painter = painterResource(id = imageResource),
-                        contentDescription = currentProduct.name,
-                        modifier = Modifier.size(75.dp).clip(RoundedCornerShape(10.dp)),
-                    )
-                }
+            // Product image
+            val imageResource = LocalContext.current.resources.getIdentifier(currentProduct.imageName, "drawable", LocalContext.current.packageName)
+            if (imageResource != 0) {
+                Image(
+                    painter = painterResource(id = imageResource),
+                    contentDescription = currentProduct.name,
+                    modifier = Modifier.size(75.dp).clip(RoundedCornerShape(10.dp)),
+                )
+            }
 
-                // Product info
-                Column(modifier = Modifier.weight(1f)) {
-                    Text (
-                        currentProduct.name,
-                        style = MaterialTheme.typography.titleMedium
-                    )
+            // Product info
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    currentProduct.name,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("Quantity: ${currentItem.quantity}", style = MaterialTheme.typography.titleMedium)
 
-                    Text (
-                        "Quantity: ${item.quantity}",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-
-                    Text (
-                        "£${"%.2f".format(item.price * item.quantity)}",
-                        style = MaterialTheme.typography.titleSmall
-                    )
-                }
-
-                // Remove button
-                Column() {
-                    IconButton (
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier.size(50.dp)
+                    // Decrement button
+                    IconButton(
+                        onClick = { viewModel.decrementQuantity(currentItem) },
+                        modifier = Modifier.size(40.dp).padding(start = 15.dp)
                     ) {
                         Icon(
-                            painter = rememberVectorPainter(Icons.Default.Delete),
-                            contentDescription = "Remove",
-                            modifier = Modifier.size(50.dp),
+                            painter = rememberVectorPainter(Icons.Default.Remove),
+                            contentDescription = "Decrease quantity",
                         )
                     }
+
+                    // Increment button
+                    IconButton(
+                        onClick = { viewModel.incrementQuantity(currentItem) },
+                        modifier = Modifier.size(40.dp)
+                    ) {
+                        Icon(
+                            painter = rememberVectorPainter(Icons.Default.Add),
+                            contentDescription = "Increase quantity",
+                        )
+                    }
+                }
+
+                // Cumulative product price
+                Text(
+                    "£${"%.2f".format(currentItem.price * currentItem.quantity)}",
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
+
+            // Remove button
+            Column() {
+                IconButton(
+                    onClick = {
+                        // Remove product from cart
+                        viewModel.removeFromCart(currentItem.productID)
+                    },
+                    modifier = Modifier.size(50.dp)
+                ) {
+                    Icon(
+                        painter = rememberVectorPainter(Icons.Default.Delete),
+                        contentDescription = "Remove",
+                        modifier = Modifier.size(50.dp),
+                    )
                 }
             }
         }

@@ -3,7 +3,6 @@ package com.example.scoa.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.scoa.model.entity.CartItemEntity
 import com.example.scoa.model.entity.ProductEntity
 import com.example.scoa.model.repository.CartRepository
@@ -12,18 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
-/*
-    Functions:
-        Retrieving the customer's cart.
-        Creating a cart if one doesn't exist.
-        Adding products.
-        Removing products.
-        Updating quantities.
-        Calculating the total.
-        Clearing the cart.
-        Exposing cart contents to Compose.
-*/
 
 class CartViewModel (private val cartRepository: CartRepository): ViewModel() {
     // Tracks whether product was successfully added
@@ -37,6 +24,11 @@ class CartViewModel (private val cartRepository: CartRepository): ViewModel() {
     // Stores cart data
     private val _cartContents = MutableStateFlow<List<CartItemEntity>>(emptyList())
     val cartContents: StateFlow<List<CartItemEntity>> = _cartContents.asStateFlow()
+
+    // Stores cart data along with products
+    // Used to reduce the number of times the app has to re-acquire menu items from the database
+    private val _cartItemsWithProducts = MutableStateFlow<List<Pair<CartItemEntity, ProductEntity>>>(emptyList())
+    val cartItemsWithProducts = _cartItemsWithProducts.asStateFlow()
 
     fun addToCart(productID: Int, quantity: Int, price: Double) {
         Log.d("CART_DEBUG", "Product: $productID, Quantity: $quantity")
@@ -61,12 +53,48 @@ class CartViewModel (private val cartRepository: CartRepository): ViewModel() {
                 Log.e("CART_DEBUG", "Error loading cart: ${e.message}")
             } finally {
                 _isLoading.value = false
+                _cartItemsWithProducts.value = cartRepository.getCartItemsWithProducts(_cartContents.value)
+            }
+        }
+    }
+
+    fun removeFromCart(prodID: Int) {
+        viewModelScope.launch {
+            try {
+                cartRepository.removeFromCart(prodID)
+                loadCart()
+            } catch (e: Exception) {
+                Log.e("CART_DEBUG", "Failed to remove item", e)
+            }
+        }
+    }
+
+    // Increments quantity
+    fun incrementQuantity(item: CartItemEntity) {
+        viewModelScope.launch {
+            try {
+                cartRepository.updateCartItemQuantity(item.cartID, item.productID, item.quantity + 1)
+                loadCart()
+            } catch (e: Exception) {
+                Log.e("CART_DEBUG", "Failed to increment quantity", e)
+            }
+        }
+    }
+
+    // Decrements quantity
+    fun decrementQuantity(item: CartItemEntity) {
+        viewModelScope.launch {
+            try {
+                if (item.quantity > 1) {
+                    cartRepository.updateCartItemQuantity(item.cartID, item.productID, item.quantity - 1)
+                    loadCart()
+                }
+            } catch (e: Exception) {
+                Log.e("CART_DEBUG", "Failed to decrement quantity", e)
             }
         }
     }
 
     // Resets result after displaying feedback
-    fun resetAddState() {
-        _addSuccess.value = false
-    }
+    fun resetAddState() { _addSuccess.value = false }
 }

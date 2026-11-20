@@ -11,15 +11,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.scoa.viewmodel.RegisterViewModel
 
 @Composable
-fun RegisterScreen (
-    viewModel: RegisterViewModel,
-    navController: NavController
-) {
+fun RegisterScreen (viewModel: RegisterViewModel, navController: NavController) {
     // Initiate variables for registration credential storage
     var fullName by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
@@ -54,10 +50,8 @@ fun RegisterScreen (
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
 
-        Text (
-            "Register",
-            style = MaterialTheme.typography.headlineSmall
-        )
+        Text ("Register", style = MaterialTheme.typography.headlineSmall)
+
         OutlinedTextField (
             value = fullName,
             onValueChange = { fullName = it },
@@ -97,12 +91,7 @@ fun RegisterScreen (
             singleLine = true,
         )
 
-        if (error.isNotEmpty()) {
-            Text (
-                text = error,
-                color = MaterialTheme.colorScheme.error
-            )
-        }
+        if (error.isNotEmpty()) Text (text = error, color = MaterialTheme.colorScheme.error)
 
         /*
         * Accept terms and conditions portion

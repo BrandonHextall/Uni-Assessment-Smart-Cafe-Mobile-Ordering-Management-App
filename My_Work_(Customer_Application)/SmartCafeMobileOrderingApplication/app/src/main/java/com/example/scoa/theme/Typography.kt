@@ -9,15 +9,15 @@ import androidx.compose.ui.unit.sp
 import com.example.scoa.R
 
 // Custom font
-val pinyon = FontFamily (
-    Font (
+val pinyon = FontFamily(
+    Font(
         resId = R.font.pinyonscript_regular,
         weight = FontWeight.Normal
     )
 )
 // Defines app's typography
-val typography = Typography (
-    titleLarge = TextStyle (
+val typography = Typography(
+    titleLarge = TextStyle(
         fontFamily = pinyon,
         fontWeight = FontWeight.Bold,
         fontSize = 55.sp
@@ -29,13 +29,13 @@ val typography = Typography (
         fontSize = 30.sp
     ),
     // Small heading
-    headlineSmall = TextStyle (
+    headlineSmall = TextStyle(
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Normal,
         fontSize = 24.sp
     ),
     // Normal text
-    bodyLarge = TextStyle (
+    bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp

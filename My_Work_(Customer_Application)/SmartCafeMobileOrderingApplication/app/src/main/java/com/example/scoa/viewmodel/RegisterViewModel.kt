@@ -1,13 +1,10 @@
 package com.example.scoa.viewmodel
 
 import android.app.Application
-import android.util.Patterns
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.scoa.model.authentication.FirebaseManager
 import com.example.scoa.model.database.CafeDatabase
-import com.example.scoa.model.entity.CartEntity
 import com.example.scoa.model.entity.UserEntity
 import com.example.scoa.model.repository.UserRepository
 import com.example.scoa.utils.validateRegistration

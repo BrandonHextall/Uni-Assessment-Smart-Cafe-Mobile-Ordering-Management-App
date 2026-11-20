@@ -5,7 +5,7 @@ import com.example.scoa.model.database.UserDao
 import com.example.scoa.model.entity.CartEntity
 import com.example.scoa.model.entity.UserEntity
 
-class UserRepository (
+class UserRepository(
     private val userDao: UserDao,
     private val cartDao: CartDao
 ) {

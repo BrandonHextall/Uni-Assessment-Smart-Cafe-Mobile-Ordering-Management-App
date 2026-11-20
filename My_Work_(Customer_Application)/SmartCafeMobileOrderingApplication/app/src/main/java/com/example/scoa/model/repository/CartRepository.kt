@@ -20,19 +20,13 @@ class CartRepository (
     // -----------------------
 
     // Create new cart
-    suspend fun insertCart(cart: CartEntity) {
-        cartDao.insertCart(cart)
-    }
+    suspend fun insertCart(cart: CartEntity) { cartDao.insertCart(cart) }
 
     // Find customer cart by Firebase UID
-    suspend fun getCartByUserID(userID: Int): CartEntity? {
-        return cartDao.getCartByUserId(userID)
-    }
+    suspend fun getCartByUserID(userID: Int): CartEntity? { return cartDao.getCartByUserId(userID) }
 
     // Find cart by its ID
-    suspend fun getCartByID(cartID: Int): CartEntity? {
-        return cartDao.getCartByID(cartID)
-    }
+    suspend fun getCartByID(cartID: Int): CartEntity? { return cartDao.getCartByID(cartID) }
 
     // -----------------------
     // CART ITEM OPERATIONS
@@ -117,8 +111,19 @@ class CartRepository (
     }
 
     // Remove product from cart
-    suspend fun removeFromCart(cartID: Int, productID: Int) {
-        cartDao.removeFromCart(cartID, productID)
+    suspend fun removeFromCart(productID: Int): Boolean {
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+            ?: return false
+
+        val user = userDao.getUserByUid(firebaseUser.uid)
+            ?: return false
+
+        val cart = cartDao.getCartByUserId(user.userID)
+            ?: return false
+
+        cartDao.removeFromCart(cart.cartID, productID)
+
+        return true
     }
 
     // Remove all products from cart
@@ -145,6 +150,18 @@ class CartRepository (
     // Get all cart items in table
     suspend fun getAllCartItems(): List<CartItemEntity> {
         return cartDao.getAllCartItems()
+    }
+
+    // Get cart items with associated product entity
+    suspend fun getCartItemsWithProducts(cartItems: List<CartItemEntity>): List<Pair<CartItemEntity, ProductEntity>> {
+        return cartItems.mapNotNull { item ->
+            val product = productDao.getProductById(item.productID)
+            if (product != null) {
+                Pair(item, product)
+            } else {
+                null
+            }
+        }
     }
 
     // -----------------------

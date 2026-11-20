@@ -6,14 +6,14 @@ import androidx.room3.Index
 import androidx.room3.PrimaryKey
 
 // Defines user table structure
-@Entity (
+@Entity(
     tableName = "users",
     indices = [
         Index(value = ["firebaseUID"], unique = true),
         Index(value = ["email"], unique = true)
     ]
 )
-data class UserEntity (
+data class UserEntity(
     @PrimaryKey(autoGenerate = true) // Autogenerates a unique local ID
     val userID: Int = 0,
 

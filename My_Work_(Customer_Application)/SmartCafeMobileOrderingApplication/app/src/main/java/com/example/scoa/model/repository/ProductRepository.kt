@@ -3,7 +3,6 @@ package com.example.scoa.model.repository
 import com.example.scoa.model.database.ProductDao
 import com.example.scoa.model.entity.ProductEntity
 import com.example.scoa.model.initialProducts
-import com.google.firebase.firestore.FirebaseFirestore
 
 // Retrieves products from database
 class ProductRepository (private val productDao: ProductDao) {

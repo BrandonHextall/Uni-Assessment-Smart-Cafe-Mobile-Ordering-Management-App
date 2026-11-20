@@ -27,7 +27,7 @@ fun StartPage(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Text (
+        Text(
             "Liber-tea Café",
             modifier = Modifier.padding(0.dp, 0.dp, 0.dp, 100.dp),
             style = MaterialTheme.typography.titleLarge,

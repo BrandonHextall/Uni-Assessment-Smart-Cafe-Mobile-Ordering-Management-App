@@ -3,7 +3,6 @@ package com.example.scoa.viewmodel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.scoa.model.database.CafeDatabase
 import com.example.scoa.model.entity.ProductEntity
